@@ -7,13 +7,13 @@ namespace MastermindTests
 {
     public class GameplayTests
     {
-        [Fact] public void GivenTheGameIsInitialised_WhenItCreatesTheGoalColourArray_ThenShouldUseRandomizerToPickFourColours()
+        [Fact] public void GivenTheGameIsInitialised_WhenItCreatesTheSelectedColourArray_ThenShouldUseRandomizerToPickFourColours()
         {
             // Arrange
             var mockRandomizer = new Mock<IRandomizer>();
             var game = new Game(mockRandomizer.Object);
             var expectedSelectedColours = new[] {Colours.Red, Colours.Blue, Colours.Blue, Colours.Green};
-            mockRandomizer.Setup(randomizer => randomizer.GetRandomFourColours())
+            mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.NumberOfColoursToSelect))
                 .Returns(expectedSelectedColours)
                 .Verifiable();
             

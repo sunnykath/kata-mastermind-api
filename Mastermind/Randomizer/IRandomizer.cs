@@ -2,7 +2,7 @@ namespace Mastermind.Randomizer
 {
     public interface IRandomizer
     {
-        public Colours[] GetRandomFourColours();
+        public Colours[] GetRandomColours(int numberOfColoursToSelect);
         
     }
 }

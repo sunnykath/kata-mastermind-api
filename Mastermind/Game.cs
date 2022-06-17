@@ -14,7 +14,7 @@ namespace Mastermind
 
         public void Initialise()
         {
-            _selectedColours = _randomizer.GetRandomFourColours();
+            _selectedColours = _randomizer.GetRandomColours(Constants.NumberOfColoursToSelect);
         }
 
         public Colours[] GetSelectedColours()
