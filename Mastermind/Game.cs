@@ -8,6 +8,7 @@ namespace Mastermind
     {
         private Colours[] _selectedColours;
         private readonly List<Clue> _clues;
+        private bool _hasWonGame;
         
         private readonly IRandomizer _randomizer;
         public Game(IRandomizer randomizer)
@@ -15,6 +16,7 @@ namespace Mastermind
             _randomizer = randomizer;
             _selectedColours = System.Array.Empty<Colours>();
             _clues = new List<Clue>();
+            _hasWonGame = false;
         }
 
         public void Initialise()
@@ -38,11 +40,21 @@ namespace Mastermind
 
                 _clues.Add(predictedAnswer[index] == selectedColour ? Clue.Black : Clue.White);
             }
+
+            if (_clues.Count(c => c == Clue.Black) == 4)
+            {
+                _hasWonGame = true;
+            }
         }
         
         public Clue[] GetClues()
         {
             return _clues.ToArray();
+        }
+
+        public bool HasWonGame()
+        {
+            return _hasWonGame;
         }
     }
 }
