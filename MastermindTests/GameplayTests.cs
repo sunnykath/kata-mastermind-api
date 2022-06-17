@@ -56,5 +56,27 @@ namespace MastermindTests
             Assert.Equal(expectedWhiteClueCount, clues.Count(c => c == Clue.White));
             Assert.Equal(expectedBlackClueCount, clues.Count(c => c == Clue.Black));
         }
+
+
+        [Fact]
+        public void GivenTheAnswerIsTheSameAsTheSelectedArray_WhenEvaluateAnswerIsFollowedByTheHasWonGameCall_ThenShouldReturnTrue()
+        {
+            // Arrange
+            var mockRandomizer = new Mock<IRandomizer>();
+            var game = new Game(mockRandomizer.Object);
+            var selectedColours = new[] {Colours.Red, Colours.Blue, Colours.Blue, Colours.Green};
+            mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.NumberOfColoursToSelect))
+                .Returns(selectedColours);
+    
+            game.Initialise();
+    
+            // Act
+            game.EvaluateAnswer(selectedColours);
+            var hasWonGame = game.HasWonGame();
+    
+            // Assert
+            Assert.True(hasWonGame);
+        }
+
     }
 }
