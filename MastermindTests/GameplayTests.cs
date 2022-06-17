@@ -28,8 +28,17 @@ namespace MastermindTests
             Assert.Equal(expectedSelectedColours, actualSelectedColours);
         }
         
-        [Fact]
-        public void GivenTheSelectedColourArrayHasBeenCreated_WhenEvaluateAnswerIsFollowedByTheGetCluesCall_ThenShouldReturnTheCorrectClues()
+        [Theory]
+        [InlineData( new[] {Colours.Green, Colours.Blue, Colours.Orange, Colours.Red}, 3, 1)]
+        [InlineData( new[] {Colours.Green, Colours.Blue, Colours.Blue, Colours.Green}, 0, 3)]
+        [InlineData( new[] {Colours.Blue, Colours.Blue, Colours.Blue, Colours.Blue}, 0, 2)]
+        [InlineData( new[] {Colours.Red, Colours.Blue, Colours.Yellow, Colours.Purple}, 1, 2)]
+        [InlineData( new[] {Colours.Purple, Colours.Yellow, Colours.Purple, Colours.Orange}, 0, 0)]
+        [InlineData( new[] {Colours.Red, Colours.Blue, Colours.Blue, Colours.Green}, 0, 4)]
+        public void GivenTheSelectedColourArrayHasBeenCreated_WhenEvaluateAnswerIsFollowedByTheGetCluesCall_ThenShouldReturnTheCorrectClues(
+            Colours[] predictedAnswer,
+            int expectedWhiteClueCount,
+            int expectedBlackClueCount)
         {
             // Arrange
             var mockRandomizer = new Mock<IRandomizer>();
@@ -38,10 +47,6 @@ namespace MastermindTests
                 .Returns(new[] {Colours.Red, Colours.Blue, Colours.Blue, Colours.Green});
             
             game.Initialise();
-            
-            var predictedAnswer = new[] {Colours.Green, Colours.Blue, Colours.Orange, Colours.Red};
-            const int expectedWhiteClueCount = 3;
-            const int expectedBlackClueCount = 1;
             
             // Act
             game.EvaluateAnswer(predictedAnswer);
