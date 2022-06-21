@@ -16,7 +16,7 @@ namespace MastermindTests
             var mockRandomizer = new Mock<IRandomizer>();
             var game = new Game(mockRandomizer.Object);
             var expectedSelectedColours = new[] {Colours.Red, Colours.Blue, Colours.Blue, Colours.Green};
-            mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.NumberOfColoursToSelect))
+            mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.SelectedNumberOfColours))
                 .Returns(expectedSelectedColours)
                 .Verifiable();
             
@@ -44,7 +44,7 @@ namespace MastermindTests
             // Arrange
             var mockRandomizer = new Mock<IRandomizer>();
             var game = new Game(mockRandomizer.Object);
-            mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.NumberOfColoursToSelect))
+            mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.SelectedNumberOfColours))
                 .Returns(new[] {Colours.Red, Colours.Blue, Colours.Blue, Colours.Green});
             
             game.Initialise();
@@ -65,7 +65,7 @@ namespace MastermindTests
             var mockRandomizer = new Mock<IRandomizer>();
             var game = new Game(mockRandomizer.Object);
             var selectedColours = new[] {Colours.Red, Colours.Blue, Colours.Blue, Colours.Green};
-            mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.NumberOfColoursToSelect))
+            mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.SelectedNumberOfColours))
                 .Returns(selectedColours);
     
             game.Initialise();
@@ -87,7 +87,7 @@ namespace MastermindTests
             var game = new Game(mockRandomizer.Object);
             var selectedColours = new[] {Colours.Red, Colours.Blue, Colours.Blue, Colours.Green};
             var invalidAnswer = new[] {Colours.Red, Colours.Blue, Colours.Blue, Colours.Green, Colours.Blue};
-            mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.NumberOfColoursToSelect))
+            mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.SelectedNumberOfColours))
                 .Returns(selectedColours);
 
             game.Initialise();

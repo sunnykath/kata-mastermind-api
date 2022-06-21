@@ -12,6 +12,7 @@ namespace Mastermind
         private bool _hasWonGame;
         
         private readonly IRandomizer _randomizer;
+        
         public Game(IRandomizer randomizer)
         {
             _randomizer = randomizer;
@@ -22,20 +23,12 @@ namespace Mastermind
 
         public void Initialise()
         {
-            _selectedColours = _randomizer.GetRandomColours(Constants.NumberOfColoursToSelect);
-        }
-
-        public Colours[] GetSelectedColours()
-        {
-            return _selectedColours;
+            _selectedColours = _randomizer.GetRandomColours(Constants.SelectedNumberOfColours);
         }
         
         public void EvaluateAnswer(Colours[] predictedAnswer)
         {
-            if (predictedAnswer.Length != 4)
-            {
-                throw new Exception(Constants.InvalidNumberOfColoursExceptionMessage);
-            }
+            ValidateInputArray(predictedAnswer);
             
             for (var index = 0; index < _selectedColours.Length; index++)
             {
@@ -46,10 +39,12 @@ namespace Mastermind
                 _clues.Add(predictedAnswer[index] == selectedColour ? Clue.Black : Clue.White);
             }
 
-            if (_clues.Count(c => c == Clue.Black) == 4)
-            {
-                _hasWonGame = true;
-            }
+            UpdateGameWonStatus();
+        }
+        
+        public Colours[] GetSelectedColours()
+        {
+            return _selectedColours;
         }
         
         public Clue[] GetClues()
@@ -60,6 +55,22 @@ namespace Mastermind
         public bool HasWonGame()
         {
             return _hasWonGame;
+        }
+        
+        private static void ValidateInputArray<T>(IReadOnlyCollection<T> inputArray)
+        {
+            if (inputArray.Count != Constants.SelectedNumberOfColours)
+            {
+                throw new Exception(Constants.InvalidNumberOfColoursExceptionMessage);
+            }
+        }
+        
+        private void UpdateGameWonStatus()
+        {
+            if (_clues.Count(c => c == Clue.Black) == 4)
+            {
+                _hasWonGame = true;
+            }
         }
     }
 }
