@@ -97,7 +97,32 @@ namespace MastermindTests
 
             // Act & Assert
             var exception = Assert.Throws<Exception>(() => game.EvaluateAnswer(invalidAnswer));
-            Assert.Equal(exception.Message, Constants.InvalidNumberOfColoursExceptionMessage); 
+            Assert.Equal(Constants.InvalidNumberOfColoursExceptionMessage, exception.Message); 
         }
+        
+        [Fact]
+        public void GivenTheAnswerIsNotCorrect_WhenEvaluateAnswerIsCalledMoreThanTheMaxNumberOfGuesses_ThenShouldThrowExceptionWithAnInvalidMessageForTheNumberOfTries()
+        {
+            // Arrange
+            var mockRandomizer = new Mock<IRandomizer>();
+            var game = new Game(mockRandomizer.Object);
+            var selectedColours = new[] {Colours.Red, Colours.Blue, Colours.Blue, Colours.Green};
+            var incorrectAnswer = new[] {Colours.Red, Colours.Orange, Colours.Blue, Colours.Yellow};
+            
+            mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.SelectedNumberOfColours))
+                .Returns(selectedColours);
+            game.Initialise();
+    
+            // Act
+            for (var i = 0; i < Constants.MaxNumberOfGuesses; i++)
+            {
+                game.EvaluateAnswer(incorrectAnswer);
+            }
+
+            // Assert
+            var exception = Assert.Throws<Exception>(() => game.EvaluateAnswer(incorrectAnswer));
+            Assert.Equal(Constants.TooManyTriesExceptionMessage, exception.Message);
+        }
+
     }
 }
