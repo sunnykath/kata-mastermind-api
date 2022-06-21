@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Mastermind.Randomizer;
@@ -31,6 +32,10 @@ namespace Mastermind
         
         public void EvaluateAnswer(Colours[] predictedAnswer)
         {
+            if (predictedAnswer.Length != 4)
+            {
+                throw new Exception(Constants.InvalidNumberOfColoursExceptionMessage);
+            }
             
             for (var index = 0; index < _selectedColours.Length; index++)
             {
