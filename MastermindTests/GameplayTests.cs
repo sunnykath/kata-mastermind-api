@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Mastermind;
 using Mastermind.Randomizer;
@@ -56,8 +57,7 @@ namespace MastermindTests
             Assert.Equal(expectedWhiteClueCount, clues.Count(c => c == Clue.White));
             Assert.Equal(expectedBlackClueCount, clues.Count(c => c == Clue.Black));
         }
-
-
+        
         [Fact]
         public void GivenTheAnswerIsTheSameAsTheSelectedArray_WhenEvaluateAnswerIsFollowedByTheHasWonGameCall_ThenShouldReturnTrue()
         {
@@ -78,5 +78,23 @@ namespace MastermindTests
             Assert.True(hasWonGame);
         }
 
+        [Fact]
+        public void
+            GivenTheAnswerDoesntContainExactlyFourColours_WhenEvaluateAnswerIsCalled_ThenShouldThrowExceptionWithAnInvalidMessageForTheNumberOfColours()
+        {
+            // Arrange
+            var mockRandomizer = new Mock<IRandomizer>();
+            var game = new Game(mockRandomizer.Object);
+            var selectedColours = new[] {Colours.Red, Colours.Blue, Colours.Blue, Colours.Green};
+            var invalidAnswer = new[] {Colours.Red, Colours.Blue, Colours.Blue, Colours.Green, Colours.Blue};
+            mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.NumberOfColoursToSelect))
+                .Returns(selectedColours);
+
+            game.Initialise();
+
+            // Act & Assert
+            var exception = Assert.Throws<Exception>(() => game.EvaluateAnswer(invalidAnswer));
+            Assert.Equal(exception.Message, Constants.InvalidNumberOfColoursExceptionMessage); 
+        }
     }
 }
