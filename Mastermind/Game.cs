@@ -31,10 +31,7 @@ namespace Mastermind
         
         public void EvaluateAnswer(Colours[] predictedAnswer)
         {
-            if (_guessingCount == Constants.MaxNumberOfGuesses)
-            {
-                throw new Exception(Constants.TooManyTriesExceptionMessage);
-            }
+            ValidateNumberOfGuesses();
             _guessingCount++;
 
             ValidateInputArray(predictedAnswer);
@@ -50,7 +47,15 @@ namespace Mastermind
 
             UpdateGameWonStatus();
         }
-        
+
+        private void ValidateNumberOfGuesses()
+        {
+            if (_guessingCount == Constants.MaxNumberOfGuesses)
+            {
+                throw new Exception(Constants.TooManyTriesExceptionMessage);
+            }
+        }
+
         public Colours[] GetSelectedColours()
         {
             return _selectedColours;
