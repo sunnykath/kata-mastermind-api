@@ -10,26 +10,35 @@ namespace Mastermind
         private Colours[] _selectedColours;
         private readonly List<Clue> _clues;
         private bool _hasWonGame;
+        private int _guessingCount;
         
         private readonly IRandomizer _randomizer;
         
         public Game(IRandomizer randomizer)
         {
             _randomizer = randomizer;
-            _selectedColours = System.Array.Empty<Colours>();
+            _selectedColours = Array.Empty<Colours>();
             _clues = new List<Clue>();
             _hasWonGame = false;
+            _guessingCount = 0;
         }
 
         public void Initialise()
         {
             _selectedColours = _randomizer.GetRandomColours(Constants.SelectedNumberOfColours);
+            _guessingCount = 0;
         }
         
         public void EvaluateAnswer(Colours[] predictedAnswer)
         {
+            if (_guessingCount == Constants.MaxNumberOfGuesses)
+            {
+                throw new Exception(Constants.TooManyTriesExceptionMessage);
+            }
+            _guessingCount++;
+
             ValidateInputArray(predictedAnswer);
-            
+
             for (var index = 0; index < _selectedColours.Length; index++)
             {
                 var selectedColour = _selectedColours[index];
