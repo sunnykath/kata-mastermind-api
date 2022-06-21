@@ -78,15 +78,18 @@ namespace MastermindTests
             Assert.True(hasWonGame);
         }
 
-        [Fact]
+        [Theory]
+        [InlineData(new []{Colours.Red, Colours.Blue, Colours.Blue, Colours.Purple, Colours.Orange, Colours.Red, Colours.Yellow})]
+        [InlineData(new []{Colours.Red, Colours.Blue, Colours.Blue, Colours.Green, Colours.Blue})]
+        [InlineData(new []{Colours.Red, Colours.Blue, Colours.Blue})]
+        [InlineData(new Colours[]{ })]
         public void
-            GivenTheAnswerDoesntContainExactlyFourColours_WhenEvaluateAnswerIsCalled_ThenShouldThrowExceptionWithAnInvalidMessageForTheNumberOfColours()
+            GivenTheAnswerDoesntContainExactlyFourColours_WhenEvaluateAnswerIsCalled_ThenShouldThrowExceptionWithAnInvalidMessageForTheNumberOfColours(Colours[] invalidAnswer)
         {
             // Arrange
             var mockRandomizer = new Mock<IRandomizer>();
             var game = new Game(mockRandomizer.Object);
             var selectedColours = new[] {Colours.Red, Colours.Blue, Colours.Blue, Colours.Green};
-            var invalidAnswer = new[] {Colours.Red, Colours.Blue, Colours.Blue, Colours.Green, Colours.Blue};
             mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.SelectedNumberOfColours))
                 .Returns(selectedColours);
 
