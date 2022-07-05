@@ -15,9 +15,9 @@ namespace MastermindTests
             var mockedInputOutput = new Mock<IInputOutput>();
             var view = new View(mockedInputOutput.Object);
             
-            mockedInputOutput.Setup(output => output.PrintOutput(Constants.Title))
+            mockedInputOutput.Setup(output => output.DisplayOutput(Constants.Title))
                 .Verifiable();
-            mockedInputOutput.Setup(output => output.PrintOutput(Constants.GameInformation))
+            mockedInputOutput.Setup(output => output.DisplayOutput(Constants.GameInformation))
                 .Verifiable();
 
             // Act

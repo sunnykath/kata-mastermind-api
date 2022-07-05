@@ -8,7 +8,7 @@ namespace Mastermind
         public const string InvalidNumberOfColoursExceptionMessage = "Answer array should only contain 4 colours.";
         public static readonly string TooManyTriesExceptionMessage = $"You have tried more than {MaxNumberOfGuesses} tries!";
 
-        public static readonly string GameInformation = $"Guess the combination of randomly selected {SelectedNumberOfColours} Colours! You have {MaxNumberOfGuesses} tries";
+        public static readonly string GameInformation = $"Guess the combination of randomly selected {SelectedNumberOfColours} Colours! You have {MaxNumberOfGuesses} tries. Good Luck 👍 \n";
 
         public const string Title = @"
             Welcome To 
