@@ -1,6 +1,6 @@
 namespace Mastermind
 {
-    public enum Colours
+    public enum Colour
     {
         Red,
         Blue,

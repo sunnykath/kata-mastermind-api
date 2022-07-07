@@ -10,7 +10,7 @@ namespace Mastermind.Presentation
             _inputOutput = consoleInputOutput;
         }
 
-        public void StartGame()
+        public void DisplayGameDetails()
         {
             _inputOutput.DisplayOutput(Constants.Title);
             _inputOutput.DisplayOutput(Constants.GameInformation);

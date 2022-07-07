@@ -9,7 +9,7 @@ namespace MastermindTests
     public class ViewTests
     {
         [Fact]
-        public void GivenAViewInstanceWithAConsoleDependency_WhenTheGameIsStarted_ThenTheConsoleShouldDisplayGameInformation()
+        public void GivenAViewInstanceWithAConsoleDependency_WhenTheDisplayGameDetailsIsCalled_ThenShouldDisplayTitleAndGameInformation()
         {
             // Arrange
             var mockedInputOutput = new Mock<IInputOutput>();
@@ -21,7 +21,7 @@ namespace MastermindTests
                 .Verifiable();
 
             // Act
-            view.StartGame();
+            view.DisplayGameDetails();
 
             // Assert
             mockedInputOutput.Verify();

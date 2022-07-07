@@ -1,8 +1,10 @@
+using System.Collections.Generic;
+
 namespace Mastermind.Randomizer
 {
     public interface IRandomizer
     {
-        public Colours[] GetRandomColours(int numberOfColoursToSelect);
+        public Colour[] GetRandomColours(int numberOfColoursToSelect);
         
     }
 }

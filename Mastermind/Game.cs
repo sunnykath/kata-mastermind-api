@@ -7,7 +7,7 @@ namespace Mastermind
 {
     public class Game
     {
-        private Colours[] _selectedColours;
+        private Colour[] _selectedColours;
         private readonly List<Clue> _clues;
         private bool _hasWonGame;
         private int _guessingCount;
@@ -17,7 +17,7 @@ namespace Mastermind
         public Game(IRandomizer randomizer)
         {
             _randomizer = randomizer;
-            _selectedColours = Array.Empty<Colours>();
+            _selectedColours = Array.Empty<Colour>();
             _clues = new List<Clue>();
             _hasWonGame = false;
             _guessingCount = 0;
@@ -29,34 +29,19 @@ namespace Mastermind
             _guessingCount = 0;
         }
         
-        public void EvaluateAnswer(Colours[] predictedAnswer)
+        public void EvaluatePredictedAnswer(Colour[] predictedAnswer)
         {
-            ValidateNumberOfGuesses();
+            GameValidator.ValidateNumberOfGuesses(_guessingCount);
             _guessingCount++;
 
-            ValidateInputArray(predictedAnswer);
-
-            for (var index = 0; index < _selectedColours.Length; index++)
-            {
-                var selectedColour = _selectedColours[index];
-                
-                if (!predictedAnswer.Contains(selectedColour)) continue;
-
-                _clues.Add(predictedAnswer[index] == selectedColour ? Clue.Black : Clue.White);
-            }
+            GameValidator.ValidateInputArray(predictedAnswer);
+            
+            UpdateCluesAccordingThePrediction(predictedAnswer);
 
             UpdateGameWonStatus();
         }
-
-        private void ValidateNumberOfGuesses()
-        {
-            if (_guessingCount == Constants.MaxNumberOfGuesses)
-            {
-                throw new Exception(Constants.TooManyTriesExceptionMessage);
-            }
-        }
-
-        public Colours[] GetSelectedColours()
+        
+        public Colour[] GetSelectedColours()
         {
             return _selectedColours;
         }
@@ -70,12 +55,16 @@ namespace Mastermind
         {
             return _hasWonGame;
         }
-        
-        private static void ValidateInputArray<T>(IReadOnlyCollection<T> inputArray)
+
+        private void UpdateCluesAccordingThePrediction(Colour[] predictedAnswer)
         {
-            if (inputArray.Count != Constants.SelectedNumberOfColours)
+            for (var index = 0; index < _selectedColours.Length; index++)
             {
-                throw new Exception(Constants.InvalidNumberOfColoursExceptionMessage);
+                var selectedColour = _selectedColours[index];
+                
+                if (!predictedAnswer.Contains(selectedColour)) continue;
+
+                _clues.Add(predictedAnswer[index] == selectedColour ? Clue.Black : Clue.White);
             }
         }
         
