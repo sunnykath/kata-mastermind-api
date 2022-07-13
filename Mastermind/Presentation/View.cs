@@ -36,9 +36,6 @@ namespace Mastermind.Presentation
 
         public Colour[] GetUserGuess()
         {
-            _inputOutput.DisplayOutput(Constants.GetInputPrompt);
-            _inputOutput.DisplayOutput(Constants.DefaultColourRow);
-
             var playerInputtedColours = _inputOutput.GetPlayerInput();
             var userGuessedColours = new Colour[4];
 
