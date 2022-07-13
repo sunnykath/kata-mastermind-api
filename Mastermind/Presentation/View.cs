@@ -15,5 +15,11 @@ namespace Mastermind.Presentation
             _inputOutput.DisplayOutput(Constants.Title);
             _inputOutput.DisplayOutput(Constants.GameInformation);
         }
+
+        public void GetPlayerInput()
+        {
+            _inputOutput.DisplayOutput(Constants.GetInputPrompt);
+            _inputOutput.DisplayOutput(Constants.DefaultColourRow);
+        }
     }
 }

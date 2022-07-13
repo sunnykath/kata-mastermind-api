@@ -1,13 +1,42 @@
+using System.Collections.Generic;
+
 namespace Mastermind
 {
     public static class Constants
     {
+        public const string RedSquare   = "🟥";
+        public const string BlueSquare  = "🟦";
+        public const string GreenSquare = "🟩";
+        public const string OrangeSquare = "🟧";
+        public const string PurpleSquare = "🟪";
+        public const string YellowSquare = "🟨";
+        
+        public const string BlackSquare = "⬛";
+        public const string WhiteSquare = "⬜";
+
+        public const string EmptySquare = "🔳";
+
+        
+        public static readonly Dictionary<Colour, string> DefaultColours = new ()
+        {
+            {Colour.Red, Constants.RedSquare},
+            {Colour.Blue, Constants.BlueSquare},
+            {Colour.Green, Constants.GreenSquare},
+            {Colour.Orange, Constants.OrangeSquare},
+            {Colour.Purple, Constants.PurpleSquare},
+            {Colour.Yellow, Constants.YellowSquare},
+        };
+        
         public const int SelectedNumberOfColours = 4;
         public const int MaxNumberOfGuesses = 60;
 
         public const string InvalidNumberOfColoursExceptionMessage = "Answer array should only contain 4 colours.";
         public static readonly string TooManyTriesExceptionMessage = $"You have tried more than {MaxNumberOfGuesses} tries!";
 
+        public const string GetInputPrompt = "Please use the colours to prepare your guess and press 'c' to check against the answer\n";
+        public const string DefaultColourRow = $"{RedSquare} {BlueSquare} {GreenSquare} {OrangeSquare} {PurpleSquare} {YellowSquare}\n";
+        
+        
         public static readonly string GameInformation = $"Guess the combination of randomly selected {SelectedNumberOfColours} Colours! You have {MaxNumberOfGuesses} tries. Good Luck 👍 \n";
 
         public const string Title = @"
