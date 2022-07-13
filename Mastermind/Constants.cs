@@ -16,17 +16,6 @@ namespace Mastermind
 
         public const string EmptySquare = "🔳";
 
-        
-        public static readonly Dictionary<Colour, string> DefaultColours = new ()
-        {
-            {Colour.Red, Constants.RedSquare},
-            {Colour.Blue, Constants.BlueSquare},
-            {Colour.Green, Constants.GreenSquare},
-            {Colour.Orange, Constants.OrangeSquare},
-            {Colour.Purple, Constants.PurpleSquare},
-            {Colour.Yellow, Constants.YellowSquare},
-        };
-        
         public const int SelectedNumberOfColours = 4;
         public const int MaxNumberOfGuesses = 60;
 
