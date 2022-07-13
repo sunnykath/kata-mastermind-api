@@ -16,6 +16,12 @@ namespace Mastermind.Presentation
             {Colour.Yellow, Constants.YellowSquare},
         };
 
+        public static readonly Dictionary<Clue, string> DefaultClues = new()
+        {
+            {Clue.Black, Constants.BlackSquare},
+            {Clue.White, Constants.WhiteSquare}
+        };
+
         private readonly IInputOutput _inputOutput;
         public View(IInputOutput consoleInputOutput)
         {
@@ -44,6 +50,17 @@ namespace Mastermind.Presentation
             }
 
             return userGuessedColours;
+        }
+
+        public void DisplayClues(Clue[] clues)
+        {
+            var outputClues = clues.Aggregate("", (current, clue) => current + DefaultClues[clue] + " ");
+            
+            for (var i = 0; i < 4 - clues.Length; i++)
+            {
+                outputClues += Constants.EmptySquare + " ";
+            }
+            _inputOutput.DisplayOutput(outputClues + "\n");
         }
     }
 }
