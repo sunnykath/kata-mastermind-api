@@ -26,5 +26,25 @@ namespace MastermindTests
             // Assert
             mockedInputOutput.Verify();
         }
+        
+        [Fact]
+        public void GivenAViewInstanceWithAConsoleDependency_WhenTheGetUserGuessIsCalled_ThenShouldDisplayAllColoursAndAskForUserInput()
+        {
+            // Arrange
+            var mockedInputOutput = new Mock<IInputOutput>();
+            var view = new View(mockedInputOutput.Object);
+            
+            mockedInputOutput.Setup(output => output.DisplayOutput(Constants.GetInputPrompt))
+                .Verifiable();
+            mockedInputOutput.Setup(output => output.DisplayOutput(Constants.DefaultColourRow))
+                .Verifiable();
+
+            // Act
+            view.GetPlayerInput();
+
+            // Assert
+            mockedInputOutput.Verify();
+        }
+        
     }
 }
