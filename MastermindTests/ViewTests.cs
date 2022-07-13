@@ -40,7 +40,7 @@ namespace MastermindTests
                 .Verifiable();
 
             // Act
-            view.GetPlayerInput();
+            view.GetUserGuess();
 
             // Assert
             mockedInputOutput.Verify();
