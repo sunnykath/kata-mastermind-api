@@ -65,5 +65,23 @@ namespace MastermindTests
             mockedInputOutput.Verify();
             Assert.Equal(expectedGuess, actualGuess);
         }
+        
+        [Fact]
+        public void GivenAViewInstanceWithAConsoleDependency_WhenTheDisplayCluesIsCalled_ThenShouldDisplayAStringWithAllTheClues()
+        {
+            // Arrange
+            var mockedInputOutput = new Mock<IInputOutput>();
+            var view = new View(mockedInputOutput.Object);
+            var clueInput = new[] {Clue.Black, Clue.White, Clue.Black};
+            mockedInputOutput.Setup(output => 
+                    output.DisplayOutput($"{Constants.BlackSquare} {Constants.WhiteSquare} {Constants.BlackSquare} {Constants.EmptySquare} \n"))
+                .Verifiable();
+
+            // Act
+            view.DisplayClues(clueInput);
+
+            // Assert
+            mockedInputOutput.Verify();
+        }
     }
 }
