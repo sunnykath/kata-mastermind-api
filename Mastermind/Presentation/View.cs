@@ -59,5 +59,15 @@ namespace Mastermind.Presentation
             }
             _inputOutput.DisplayOutput(outputClues + "\n");
         }
+
+        public void DisplayGameWonResult(Colour[] correctAnswer)
+        {
+            
+            var outputCorrectAnswer =
+                correctAnswer.Aggregate("", (current, colour) => current + DefaultColours[colour] + " ");
+            
+            _inputOutput.DisplayOutput(Constants.GameWonMessage);
+            _inputOutput.DisplayOutput(outputCorrectAnswer + "\n");
+        }
     }
 }
