@@ -65,8 +65,15 @@ namespace Mastermind.Presentation
             
             var outputCorrectAnswer =
                 correctAnswer.Aggregate("", (current, colour) => current + DefaultColours[colour] + " ");
-            
             _inputOutput.DisplayOutput(Constants.GameWonMessage);
+            _inputOutput.DisplayOutput(outputCorrectAnswer + "\n");
+        }
+
+        public void DisplayGameQuitResult(Colour[] correctAnswer)
+        {
+            var outputCorrectAnswer =
+                correctAnswer.Aggregate("", (current, colour) => current + DefaultColours[colour] + " ");
+            _inputOutput.DisplayOutput(Constants.GameQuitMessage);
             _inputOutput.DisplayOutput(outputCorrectAnswer + "\n");
         }
     }

@@ -25,9 +25,10 @@ namespace Mastermind
         public const string GetInputPrompt = "Please use the colours to prepare your guess and press 'c' to check against the answer\n";
         public const string DefaultColourRow = $"{RedSquare} {BlueSquare} {GreenSquare} {OrangeSquare} {PurpleSquare} {YellowSquare}\n";
 
-        public static string GameWonMessage = "Congratulations! You have won the game by guessing the correct colours as shown below: \n";
+        public const string GameWonMessage = "Congratulations! You have won the game by guessing the correct colours as shown below: \n";
+        public const string GameQuitMessage = "You have quit the game, here's the answer: \n";
 
-        
+
         public static readonly string GameInformation = $"Guess the combination of randomly selected {SelectedNumberOfColours} Colours! You have {MaxNumberOfGuesses} tries. Good Luck 👍 \n";
 
         public const string Title = @"
