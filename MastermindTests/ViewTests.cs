@@ -65,8 +65,10 @@ namespace MastermindTests
             mockedInputOutput.Verify();
         }
         
-        [Fact]
-        public void GivenAViewInstanceWithAConsoleDependency_WhenDisplayGameWonResultIsCalled_ThenShouldDisplayTheAnswerWithAWinningMessage()
+        [Theory]
+        [InlineData(GameStatus.Won, Constants.GameWonMessage)]
+        [InlineData(GameStatus.Quit, Constants.GameQuitMessage)]
+        public void GivenAViewInstanceWithAConsoleDependency_WhenDisplayEndGameResultIsCalled_ThenShouldDisplayTheAnswerWithAFinalGameMessage(GameStatus gameStatus, string finalGameMessage)
         {
             // Arrange
             var mockedInputOutput = new Mock<IInputOutput>();
@@ -74,39 +76,18 @@ namespace MastermindTests
             var correctAnswer = new[] {Colour.Blue, Colour.Red, Colour.Yellow, Colour.Green};
             
             mockedInputOutput.Setup(output => 
-                    output.DisplayOutput(Constants.GameWonMessage))
+                    output.DisplayOutput(finalGameMessage))
                 .Verifiable();
             mockedInputOutput.Setup(output => 
                     output.DisplayOutput($"{Constants.BlueSquare} {Constants.RedSquare} {Constants.YellowSquare} {Constants.GreenSquare} \n"))
                 .Verifiable();
         
             // Act
-            view.DisplayGameWonResult(correctAnswer);
-
+            view.DisplayEndGameResult(gameStatus, correctAnswer);
+        
             // Assert
             mockedInputOutput.Verify();
         }
-        
-        [Fact]
-        public void GivenAViewInstanceWithAConsoleDependency_WhenDisplayGameQuitIsCalled_ThenShouldDisplayTheAnswerWithAQuitMessage()
-        {
-            // Arrange
-            var mockedInputOutput = new Mock<IInputOutput>();
-            var view = new View(mockedInputOutput.Object);
-            var correctAnswer = new[] {Colour.Blue, Colour.Red, Colour.Yellow, Colour.Green};
-            
-            mockedInputOutput.Setup(output => 
-                    output.DisplayOutput(Constants.GameQuitMessage))
-                .Verifiable();
-            mockedInputOutput.Setup(output => 
-                    output.DisplayOutput($"{Constants.BlueSquare} {Constants.RedSquare} {Constants.YellowSquare} {Constants.GreenSquare} \n"))
-                .Verifiable();
-        
-            // Act
-            view.DisplayGameQuitResult(correctAnswer);
 
-            // Assert
-            mockedInputOutput.Verify();
-        }
     }
 }
