@@ -86,5 +86,27 @@ namespace MastermindTests
             // Assert
             mockedInputOutput.Verify();
         }
+        
+        [Fact]
+        public void GivenAViewInstanceWithAConsoleDependency_WhenDisplayGameQuitIsCalled_ThenShouldDisplayTheAnswerWithAQuitMessage()
+        {
+            // Arrange
+            var mockedInputOutput = new Mock<IInputOutput>();
+            var view = new View(mockedInputOutput.Object);
+            var correctAnswer = new[] {Colour.Blue, Colour.Red, Colour.Yellow, Colour.Green};
+            
+            mockedInputOutput.Setup(output => 
+                    output.DisplayOutput(Constants.GameQuitMessage))
+                .Verifiable();
+            mockedInputOutput.Setup(output => 
+                    output.DisplayOutput($"{Constants.BlueSquare} {Constants.RedSquare} {Constants.YellowSquare} {Constants.GreenSquare} \n"))
+                .Verifiable();
+        
+            // Act
+            view.DisplayGameQuitResult(correctAnswer);
+
+            // Assert
+            mockedInputOutput.Verify();
+        }
     }
 }
