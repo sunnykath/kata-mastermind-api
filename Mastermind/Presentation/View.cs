@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Mastermind.Presentation.InputOutput;
@@ -60,20 +61,21 @@ namespace Mastermind.Presentation
             _inputOutput.DisplayOutput(outputClues + "\n");
         }
 
-        public void DisplayGameWonResult(Colour[] correctAnswer)
+        public void DisplayEndGameResult(GameStatus gameStatus, Colour[] correctAnswer)
         {
-            
+            switch (gameStatus)
+            {
+                case GameStatus.Won:
+                    _inputOutput.DisplayOutput(Constants.GameWonMessage);
+                    break;
+                case GameStatus.Quit:
+                    _inputOutput.DisplayOutput(Constants.GameQuitMessage);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
             var outputCorrectAnswer =
                 correctAnswer.Aggregate("", (current, colour) => current + DefaultColours[colour] + " ");
-            _inputOutput.DisplayOutput(Constants.GameWonMessage);
-            _inputOutput.DisplayOutput(outputCorrectAnswer + "\n");
-        }
-
-        public void DisplayGameQuitResult(Colour[] correctAnswer)
-        {
-            var outputCorrectAnswer =
-                correctAnswer.Aggregate("", (current, colour) => current + DefaultColours[colour] + " ");
-            _inputOutput.DisplayOutput(Constants.GameQuitMessage);
             _inputOutput.DisplayOutput(outputCorrectAnswer + "\n");
         }
     }
