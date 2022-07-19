@@ -46,9 +46,9 @@ namespace Mastermind
             return _selectedColours;
         }
         
-        public Clue[] GetClues()
+        public IEnumerable<Clue> GetClues()
         {
-            return _clues.ToArray();
+            return _clues;
         }
 
         public bool HasWonGame()

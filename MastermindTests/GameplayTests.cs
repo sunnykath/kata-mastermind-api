@@ -51,7 +51,7 @@ namespace MastermindTests
             
             // Act
             game.EvaluatePredictedAnswer(predictedAnswer);
-            var clues = game.GetClues();
+            var clues = game.GetClues().ToList();
             
             // Assert
             Assert.Equal(expectedWhiteClueCount, clues.Count(c => c == Clue.White));
