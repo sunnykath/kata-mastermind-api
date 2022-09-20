@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Mastermind.Enums;
 using Mastermind.Randomizer;
 
-namespace Mastermind
+namespace Mastermind.Game
 {
     public class Game
     {

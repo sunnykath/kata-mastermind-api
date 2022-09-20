@@ -1,7 +1,6 @@
-using System;
-using System.Collections.Generic;
+using Mastermind.Presentation;
 
-namespace Mastermind
+namespace Mastermind.Game
 {
     public static class GameValidator
     {
@@ -9,7 +8,7 @@ namespace Mastermind
         {
             if (guessingCount == Constants.MaxNumberOfGuesses)
             {
-                throw new Exception(Constants.TooManyTriesExceptionMessage);
+                throw new Exception(ConsoleMessages.TooManyTriesExceptionMessage);
             }
         }
         
@@ -17,7 +16,7 @@ namespace Mastermind
         {
             if (inputArray.Count != Constants.SelectedNumberOfColours)
             {
-                throw new Exception(Constants.InvalidNumberOfColoursExceptionMessage);
+                throw new Exception(ConsoleMessages.InvalidNumberOfColoursExceptionMessage);
             }
         }
     }

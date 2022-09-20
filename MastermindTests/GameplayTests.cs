@@ -1,6 +1,9 @@
 using System;
 using System.Linq;
 using Mastermind;
+using Mastermind.Enums;
+using Mastermind.Game;
+using Mastermind.Presentation;
 using Mastermind.Randomizer;
 using Moq;
 using Xunit;
@@ -96,7 +99,7 @@ namespace MastermindTests
 
             // Act & Assert
             var exception = Assert.Throws<Exception>(() => game.EvaluatePredictedAnswer(invalidAnswer));
-            Assert.Equal(Constants.InvalidNumberOfColoursExceptionMessage, exception.Message); 
+            Assert.Equal(ConsoleMessages.InvalidNumberOfColoursExceptionMessage, exception.Message); 
         }
         
         [Fact]
@@ -120,7 +123,7 @@ namespace MastermindTests
 
             // Assert
             var exception = Assert.Throws<Exception>(() => game.EvaluatePredictedAnswer(incorrectAnswer));
-            Assert.Equal(Constants.TooManyTriesExceptionMessage, exception.Message);
+            Assert.Equal(ConsoleMessages.TooManyTriesExceptionMessage, exception.Message);
         }
     }
 }
