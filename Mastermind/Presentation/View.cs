@@ -1,13 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Mastermind.Enums;
 using Mastermind.Presentation.InputOutput;
 
 namespace Mastermind.Presentation
 {
     public class View
     {
-        public static readonly Dictionary<Colour, string> DefaultColours = new ()
+        private static readonly Dictionary<Colour, string> DefaultColours = new ()
         {
             {Colour.Red, Constants.RedSquare},
             {Colour.Blue, Constants.BlueSquare},
@@ -17,7 +15,7 @@ namespace Mastermind.Presentation
             {Colour.Yellow, Constants.YellowSquare},
         };
 
-        public static readonly Dictionary<Clue, string> DefaultClues = new()
+        private static readonly Dictionary<Clue, string> DefaultClues = new()
         {
             {Clue.Black, Constants.BlackSquare},
             {Clue.White, Constants.WhiteSquare}
@@ -28,37 +26,31 @@ namespace Mastermind.Presentation
         {
             _inputOutput = consoleInputOutput;
         }
-
-        public void DisplayGameDetails()
+        
+        public void DisplayInitialMessage()
         {
-            _inputOutput.DisplayOutput(Constants.Title);
-            _inputOutput.DisplayOutput(Constants.GameInformation);
+            _inputOutput.OutputWelcomeMessage();
         }
-
+        
         public Colour[] GetUserGuess()
         {
-            var playerInputtedColours = _inputOutput.GetPlayerInput();
-            var userGuessedColours = new Colour[4];
-
-            for (var i = 0; i < playerInputtedColours.Length; i++)
-            {
-                var colour = playerInputtedColours[i];
-                var tempColour = DefaultColours.First(c => c.Value == colour).Key;
-                userGuessedColours[i] = tempColour;
-            }
-
+            var playerInputtedColours = _inputOutput.GetAGuessInput();
+           
+            var userGuessedColours = ConvertStringToColours(playerInputtedColours);
+            
             return userGuessedColours;
         }
 
-        public void DisplayClues(Clue[] clues)
+        public void DisplayClues(List<Clue> clues)
         {
-            var outputClues = clues.Aggregate("", (current, clue) => current + DefaultClues[clue] + " ");
+            // @TODO: magic number
+            var outputClues = new List<string>();
             
-            for (var i = 0; i < 4 - clues.Length; i++)
+            for (var i = 0; i < clues.Count; i++)
             {
-                outputClues += Constants.EmptySquare + " ";
+                outputClues.Add(DefaultClues[clues[i]]);
             }
-            _inputOutput.DisplayOutput(outputClues + "\n");
+            _inputOutput.OutputClues(outputClues);
         }
 
         public void DisplayEndGameResult(GameStatus gameStatus, Colour[] correctAnswer)
@@ -66,17 +58,42 @@ namespace Mastermind.Presentation
             switch (gameStatus)
             {
                 case GameStatus.Won:
-                    _inputOutput.DisplayOutput(Constants.GameWonMessage);
+                    _inputOutput.OutputGameWonMessage();
                     break;
                 case GameStatus.Quit:
-                    _inputOutput.DisplayOutput(Constants.GameQuitMessage);
+                    _inputOutput.OutputGameQuitMessage();
                     break;
+                // @DO I NEED THIS??
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            var outputCorrectAnswer =
-                correctAnswer.Aggregate("", (current, colour) => current + DefaultColours[colour] + " ");
-            _inputOutput.DisplayOutput(outputCorrectAnswer + "\n");
+            _inputOutput.OutputColourArray(ConvertColourToString(correctAnswer));
+        }
+
+        private string[] ConvertColourToString(Colour[] colours)
+        {
+            // @TODO: magic number
+            var colourString = new string[4];
+
+            for (var index = 0; index < colours.Length; index++)
+            {
+                colourString[index] = DefaultColours[colours[index]];
+            }
+            return colourString;
+        }
+
+        private Colour[] ConvertStringToColours(string[] colourString)
+        {
+            // @TODO: magic number
+            var colours = new Colour[4];
+
+            for (var i = 0; i < colourString.Length; i++)
+            {
+                var colour = colourString[i];
+                var tempColour = DefaultColours.First(c => c.Value == colour).Key;
+                colours[i] = tempColour;
+            }
+            return colours;
         }
     }
 }

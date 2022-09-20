@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Mastermind;
+using Mastermind.Enums;
 using Mastermind.Presentation;
 using Mastermind.Presentation.InputOutput;
 using Moq;
@@ -15,14 +17,12 @@ namespace MastermindTests
             var mockedInputOutput = new Mock<IInputOutput>();
             var view = new View(mockedInputOutput.Object);
             
-            mockedInputOutput.Setup(output => output.DisplayOutput(Constants.Title))
+            mockedInputOutput.Setup(output => output.OutputWelcomeMessage())
                 .Verifiable();
-            mockedInputOutput.Setup(output => output.DisplayOutput(Constants.GameInformation))
-                .Verifiable();
-
+        
             // Act
-            view.DisplayGameDetails();
-
+            view.DisplayInitialMessage();
+        
             // Assert
             mockedInputOutput.Verify();
         }
@@ -35,13 +35,13 @@ namespace MastermindTests
             var view = new View(mockedInputOutput.Object);
             var expectedGuess = new [] {Colour.Red, Colour.Blue, Colour.Yellow, Colour.Green};
             
-            mockedInputOutput.Setup(output => output.GetPlayerInput())
+            mockedInputOutput.Setup(output => output.GetAGuessInput())
                 .Returns(new[] {Constants.RedSquare, Constants.BlueSquare, Constants.YellowSquare, Constants.GreenSquare})
                 .Verifiable();
-
+        
             // Act
             var actualGuess = view.GetUserGuess();
-
+        
             // Assert
             mockedInputOutput.Verify();
             Assert.Equal(expectedGuess, actualGuess);
@@ -53,33 +53,42 @@ namespace MastermindTests
             // Arrange
             var mockedInputOutput = new Mock<IInputOutput>();
             var view = new View(mockedInputOutput.Object);
-            var clueInput = new[] {Clue.Black, Clue.White, Clue.Black};
+            var clueInput = new List<Clue> {Clue.Black, Clue.White, Clue.Black};
             mockedInputOutput.Setup(output => 
-                    output.DisplayOutput($"{Constants.BlackSquare} {Constants.WhiteSquare} {Constants.BlackSquare} {Constants.EmptySquare} \n"))
+                    output.OutputClues(new List<string> {Constants.BlackSquare, Constants.WhiteSquare, Constants.BlackSquare}))
                 .Verifiable();
-
+        
             // Act
             view.DisplayClues(clueInput);
-
+        
             // Assert
             mockedInputOutput.Verify();
         }
         
         [Theory]
-        [InlineData(GameStatus.Won, Constants.GameWonMessage)]
-        [InlineData(GameStatus.Quit, Constants.GameQuitMessage)]
-        public void GivenAViewInstanceWithAConsoleDependency_WhenDisplayEndGameResultIsCalled_ThenShouldDisplayTheAnswerWithAFinalGameMessage(GameStatus gameStatus, string finalGameMessage)
+        [InlineData(GameStatus.Won)]
+        [InlineData(GameStatus.Quit)]
+        public void GivenAViewInstanceWithAConsoleDependency_WhenDisplayEndGameResultIsCalled_ThenShouldDisplayTheAnswerWithAFinalGameMessage(GameStatus gameStatus)
         {
             // Arrange
             var mockedInputOutput = new Mock<IInputOutput>();
             var view = new View(mockedInputOutput.Object);
             var correctAnswer = new[] {Colour.Blue, Colour.Red, Colour.Yellow, Colour.Green};
-            
-            mockedInputOutput.Setup(output => 
-                    output.DisplayOutput(finalGameMessage))
+
+            if (gameStatus == GameStatus.Won)
+            {
+                mockedInputOutput.Setup(output => 
+                    output.OutputGameWonMessage())
                 .Verifiable();
+            }
+            else
+            {
+                mockedInputOutput.Setup(output => 
+                        output.OutputGameQuitMessage())
+                    .Verifiable();
+            }
             mockedInputOutput.Setup(output => 
-                    output.DisplayOutput($"{Constants.BlueSquare} {Constants.RedSquare} {Constants.YellowSquare} {Constants.GreenSquare} \n"))
+                    output.OutputColourArray(new []{Constants.BlueSquare, Constants.RedSquare, Constants.YellowSquare, Constants.GreenSquare}))
                 .Verifiable();
         
             // Act
@@ -88,6 +97,5 @@ namespace MastermindTests
             // Assert
             mockedInputOutput.Verify();
         }
-
     }
 }
