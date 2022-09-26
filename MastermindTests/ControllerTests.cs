@@ -1,4 +1,5 @@
 using Mastermind;
+using Mastermind.Enums;
 using Mastermind.Presentation.InputOutput;
 using Moq;
 using Xunit;
@@ -18,6 +19,27 @@ public class ControllerTests
 
         // Act
         gameController.Initialise();
+
+        // Assert
+        mockedConsole.Verify();
+    }
+
+    [Fact]
+    public void GivenTheGameHasBeenInitialised_WhenPlayGameIsCalledAndTheUserIsPromptedToEnterInAGuess_ThenTheGuessShouldBePrintedOut()
+    {
+        //Arrange
+        var guessedColours = new[]
+            { Constants.BlueSquare, Constants.GreenSquare, Constants.YellowSquare, Constants.RedSquare }; 
+        var mockedConsole = new Mock<IInputOutput>();
+        mockedConsole.Setup(input => input.GetAGuessInput())
+            .Returns(guessedColours);
+        mockedConsole.Setup(output => output.OutputColourArray(guessedColours))
+            .Verifiable();
+        var gameController = new Controller(mockedConsole.Object);
+        gameController.Initialise();
+        
+        // Act
+        gameController.PlayGame();
 
         // Assert
         mockedConsole.Verify();
