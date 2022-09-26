@@ -16,4 +16,10 @@ public class Controller
     {
         _view.DisplayInitialMessage();
     }
+
+    public void PlayGame()
+    {
+        var userGuess = _view.GetUserGuess();
+        _view.DisplayGuess(userGuess);
+    }
 }

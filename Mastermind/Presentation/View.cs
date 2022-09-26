@@ -43,16 +43,17 @@ namespace Mastermind.Presentation
 
         public void DisplayClues(List<Clue> clues)
         {
-            // @TODO: magic number
-            var outputClues = new List<string>();
-            
-            for (var i = 0; i < clues.Count; i++)
-            {
-                outputClues.Add(DefaultClues[clues[i]]);
-            }
+            var outputClues = clues.Select(t => DefaultClues[t]).ToList();
+
             _inputOutput.OutputClues(outputClues);
         }
 
+        public void DisplayGuess(Colour[] userGuess)
+        {
+            var outputColours = ConvertColourToString(userGuess);
+            _inputOutput.OutputColourArray(outputColours);
+        }
+        
         public void DisplayEndGameResult(GameStatus gameStatus, Colour[] correctAnswer)
         {
             switch (gameStatus)
@@ -67,7 +68,6 @@ namespace Mastermind.Presentation
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            _inputOutput.OutputColourArray(ConvertColourToString(correctAnswer));
         }
 
         private string[] ConvertColourToString(Colour[] colours)
