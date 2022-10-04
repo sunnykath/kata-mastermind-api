@@ -1,6 +1,6 @@
 using Mastermind.Enums;
 
-namespace Mastermind.Game;
+namespace Mastermind.GamePlay;
 
 public class Game
 {

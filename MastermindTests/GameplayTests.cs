@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Mastermind;
 using Mastermind.Enums;
-using Mastermind.Game;
+using Mastermind.GamePlay;
 using Mastermind.Presentation;
 using Mastermind.Randomizer;
 using Moq;

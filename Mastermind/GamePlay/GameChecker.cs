@@ -1,7 +1,7 @@
 using Mastermind.Enums;
 using Mastermind.Randomizer;
 
-namespace Mastermind.Game
+namespace Mastermind.GamePlay
 {
     public class GameChecker
     {

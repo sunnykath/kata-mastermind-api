@@ -1,6 +1,6 @@
 using Mastermind.Presentation;
 
-namespace Mastermind.Game
+namespace Mastermind.GamePlay
 {
     public static class GameValidator
     {
