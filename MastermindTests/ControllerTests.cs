@@ -50,4 +50,37 @@ public class ControllerTests
         // Assert
         mockedConsole.Verify();
     }
+
+    [Fact]
+    public void
+        GivenTheGameHasBeenInitialised_WhenPlayGameIsCalledAndTheUserEntersAGuess_ThenTheCluesBasedOnTheUserGuessShouldBeDisplayed()
+    {
+        //Arrange
+        var guessedColours = new[]
+            { Constants.BlueSquare, Constants.GreenSquare, Constants.YellowSquare, Constants.RedSquare };
+        var printedClues = new List<string> { Constants.BlackSquare, Constants.WhiteSquare };
+        var mockedConsole = new Mock<IInputOutput>();
+        mockedConsole.Setup(input => input.GetAGuessInput())
+            .Returns(guessedColours);
+        mockedConsole.Setup(output => output.OutputClues(printedClues))
+            .Verifiable();
+        var gameController = new Controller(mockedConsole.Object);
+        gameController.Initialise();
+    
+        var randomizedClues = new List<Clue> { Clue.Black, Clue.White };
+    
+        var mockedRandomizer = new Mock<IRandomizer>();
+        mockedRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.SelectedNumberOfColours))
+        .Returns(new [] { Colour.Blue , Colour.Red, Colour.Orange, Colour.Purple});
+        mockedRandomizer.Setup(randomizer => randomizer.GetShuffledArray(It.IsAny<List<Clue>>()))
+            .Returns(randomizedClues)
+            .Verifiable();
+        
+        // Act
+        gameController.PlayGame(mockedRandomizer.Object);
+    
+        // Assert
+        mockedConsole.Verify();
+        mockedRandomizer.Verify();
+    }
 }
