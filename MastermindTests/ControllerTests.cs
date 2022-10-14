@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using Mastermind;
 using Mastermind.Enums;
 using Mastermind.Presentation.InputOutput;
+using Mastermind.Randomizer;
 using Moq;
 using Xunit;
 
@@ -37,9 +39,13 @@ public class ControllerTests
             .Verifiable();
         var gameController = new Controller(mockedConsole.Object);
         gameController.Initialise();
+
+        var mockedRandomizer = new Mock<IRandomizer>();
+        mockedRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.SelectedNumberOfColours))
+            .Returns(new [] { Colour.Blue , Colour.Red, Colour.Orange, Colour.Purple});
         
         // Act
-        gameController.PlayGame();
+        gameController.PlayGame(mockedRandomizer.Object);
 
         // Assert
         mockedConsole.Verify();
