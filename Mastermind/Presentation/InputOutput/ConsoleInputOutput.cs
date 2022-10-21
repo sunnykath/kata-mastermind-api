@@ -27,7 +27,7 @@ namespace Mastermind.Presentation.InputOutput
 
         public void OutputColourArray(string[] colours)
         {
-            PrintOutput("Here's your guess : " + string.Join(" ", colours));
+            PrintOutput("Here's your colours : " + string.Join(" ", colours));
         }
 
         public void OutputClues(List<string> clues)
