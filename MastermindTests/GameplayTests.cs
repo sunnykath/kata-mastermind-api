@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Mastermind;
 using Mastermind.Enums;
@@ -56,6 +57,9 @@ namespace MastermindTests
             // Arrange
             _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.SelectedNumberOfColours))
                 .Returns(new[] {Colour.Red, Colour.Blue, Colour.Blue, Colour.Green});
+            _mockRandomizer.Setup(randomizer =>
+                    randomizer.GetShuffledArray(It.IsAny<List<Clue>>()))
+                .Returns<List<Clue>>(clues => clues);
             
             _gameChecker.Initialise();
             
@@ -67,7 +71,31 @@ namespace MastermindTests
             Assert.Equal(expectedWhiteClueCount, clues.Count(c => c == Clue.White));
             Assert.Equal(expectedBlackClueCount, clues.Count(c => c == Clue.Black));
         }
-        
+
+        [Fact]
+        public void GivenTheSelectedColourArrayHasBeenCreated_WhenEvaluateAnswerIsFollowedByTheGetCluesCall_ThenShouldReturnTheCorrectCluesShuffledByTheRandomizer()
+        {
+            // Arrange
+            var predictedAnswer = new[] { Colour.Red, Colour.Blue, Colour.Yellow, Colour.Purple };
+            var expectedClues = new List<Clue> { Clue.Black, Clue.White, Clue.Black };
+            _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.SelectedNumberOfColours))
+                .Returns(new[] {Colour.Red, Colour.Blue, Colour.Blue, Colour.Green});
+            _mockRandomizer.Setup(randomizer =>
+                    randomizer.GetShuffledArray(new List<Clue> { Clue.Black, Clue.Black, Clue.White }))
+                .Returns(expectedClues)
+                .Verifiable();
+            
+            _gameChecker.Initialise();
+            
+            // Act
+            _gameChecker.EvaluatePredictedAnswer(predictedAnswer);
+            var actualClues = _game.Clues;
+
+            // Assert
+            Assert.Equal(expectedClues, actualClues);
+            _mockRandomizer.Verify();
+        }
+
         [Fact]
         public void GivenTheAnswerIsTheSameAsTheSelectedArray_WhenEvaluateAnswerIsFollowedByTheHasWonGameCall_ThenShouldReturnTrue()
         {
@@ -75,6 +103,9 @@ namespace MastermindTests
             var selectedColours = new[] {Colour.Red, Colour.Blue, Colour.Blue, Colour.Green};
             _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.SelectedNumberOfColours))
                 .Returns(selectedColours);
+            _mockRandomizer.Setup(randomizer =>
+                    randomizer.GetShuffledArray(It.IsAny<List<Clue>>()))
+                .Returns<List<Clue>>(clues => clues);
 
             _gameChecker.Initialise();
 
@@ -114,6 +145,9 @@ namespace MastermindTests
             
             _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.SelectedNumberOfColours))
                 .Returns(selectedColours);
+            _mockRandomizer.Setup(randomizer =>
+                    randomizer.GetShuffledArray(new List<Clue> { Clue.Black, Clue.Black, Clue.White }))
+                .Returns(new List<Clue>());
             _gameChecker.Initialise();
         
             // Act
