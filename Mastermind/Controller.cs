@@ -1,3 +1,4 @@
+using Mastermind.Enums;
 using Mastermind.Presentation;
 using Mastermind.Presentation.InputOutput;
 using Mastermind.Randomizer;
@@ -16,19 +17,30 @@ public class Controller
         _view = new View(inputOutput);
     }
 
-    public void Initialise()
-    {
-        _view.DisplayInitialMessage();
-    }
-
     public void PlayGame(IRandomizer randomizer)
     {
-        var gameChecker = new GameChecker(randomizer, _game);
-
-        var userGuess = _view.GetUserGuess();
-        _view.DisplayGuess(userGuess);
-        gameChecker.EvaluatePredictedAnswer(userGuess);
+        _view.DisplayInitialMessage();
         
-        _view.DisplayClues(_game.Clues);
+        var gameChecker = new GameChecker(randomizer, _game);
+        gameChecker.Initialise();
+        var gameStatus = GameStatus.Playing;
+
+        while (gameStatus == GameStatus.Playing)
+        {
+            _view.UpdatePlayerGuess();
+
+            if (_view.HasPLayerQuit())
+            {
+                gameStatus = GameStatus.Quit;
+            }
+            else
+            {
+                var userGuess = _view.GetUpdatedUserGuess();
+                _view.DisplayGuess(userGuess);
+                gameChecker.EvaluatePredictedAnswer(userGuess);
+
+                _view.DisplayClues(_game.Clues);
+            }
+        }
     }
 }
