@@ -1,4 +1,5 @@
 using Mastermind.Enums;
+using Mastermind.GamePlay;
 using Mastermind.Presentation.InputOutput;
 
 namespace Mastermind.Presentation
@@ -57,6 +58,18 @@ namespace Mastermind.Presentation
             return _hasQuit;
         }
 
+        public void DisplayUpdatedGameInfo(Game game)
+        {
+            DisplayGuess(_userGuessedColours);
+            DisplayClues(game.Clues);
+            DisplayGuessesRemaining(game.GuessingCount);
+        }
+
+        private void DisplayGuessesRemaining(int gameGuessingCount)
+        {
+            _inputOutput.OutputGuessesRemaining(Constants.MaxNumberOfGuesses - gameGuessingCount);
+        }
+
         public void DisplayClues(List<Clue> clues)
         {
             var outputClues = clues.Select(t => DefaultClues[t]).ToList();
@@ -64,13 +77,13 @@ namespace Mastermind.Presentation
             _inputOutput.OutputClues(outputClues);
         }
 
-        public void DisplayGuess(Colour[] userGuess)
+        private void DisplayGuess(Colour[] userGuess)
         {
             var outputColours = ConvertColourToString(userGuess);
             _inputOutput.OutputColourArray(outputColours);
         }
         
-        public void DisplayEndGameResult(GameStatus gameStatus, Colour[] correctAnswer)
+        public void DisplayEndGameResult(GameStatus gameStatus, Game game)
         {
             switch (gameStatus)
             {
@@ -80,11 +93,9 @@ namespace Mastermind.Presentation
                 case GameStatus.Quit:
                     _inputOutput.OutputGameQuitMessage();
                     break;
-                // @DO I NEED THIS??
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
-            DisplayGuess(correctAnswer);
+            DisplayGuessesRemaining(game.GuessingCount);
+            DisplayGuess(game.SelectedColours);
         }
 
         private string[] ConvertColourToString(Colour[] colours)

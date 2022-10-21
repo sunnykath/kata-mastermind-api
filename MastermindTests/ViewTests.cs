@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Mastermind;
 using Mastermind.Enums;
+using Mastermind.GamePlay;
 using Mastermind.Presentation;
 using Mastermind.Presentation.InputOutput;
 using Moq;
@@ -96,7 +97,11 @@ namespace MastermindTests
                 .Verifiable();
         
             // Act
-            view.DisplayEndGameResult(gameStatus, correctAnswer);
+            view.DisplayEndGameResult(gameStatus, new Game()
+            {
+                GuessingCount = 34,
+                SelectedColours = correctAnswer
+            });
         
             // Assert
             mockedInputOutput.Verify();

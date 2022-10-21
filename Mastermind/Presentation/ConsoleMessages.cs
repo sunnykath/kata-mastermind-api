@@ -8,9 +8,9 @@ public static class ConsoleMessages
 
     public const string GetUserGuessMessage = "You can pick your four colours from the following!";
     public const string GetUserGuessPrompt = "Please enter the numbers to select the respective colours (e.g. 2345) : ";
-    public const string InvalidInputMessage = "Invalid Input, Please enter valid numbers between 0-5: ";
+    public const string InvalidInputMessage = "Invalid Input, Please enter valid numbers between 0-5 : ";
+    public const string GuessesRemainingMessage = "Guesses Remaining : ";
 
-    public const string GameWonMessage = "Congratulations! You have won the game by guessing the correct colours as shown below: \n";
     public const string GameQuitMessage = "You have quit the game, here's the answer: \n";
 
 
@@ -27,4 +27,16 @@ public static class ConsoleMessages
             ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═════╝ 
 
             ";
+
+    public const string GameWonMessage = @"
+
+             ██████╗ ██████╗ ███╗   ██╗ ██████╗ ██████╗  █████╗ ████████╗██╗   ██╗██╗      █████╗ ████████╗██╗ ██████╗ ███╗   ██╗███████╗
+            ██╔════╝██╔═══██╗████╗  ██║██╔════╝ ██╔══██╗██╔══██╗╚══██╔══╝██║   ██║██║     ██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
+            ██║     ██║   ██║██╔██╗ ██║██║  ███╗██████╔╝███████║   ██║   ██║   ██║██║     ███████║   ██║   ██║██║   ██║██╔██╗ ██║███████╗
+            ██║     ██║   ██║██║╚██╗██║██║   ██║██╔══██╗██╔══██║   ██║   ██║   ██║██║     ██╔══██║   ██║   ██║██║   ██║██║╚██╗██║╚════██║
+            ╚██████╗╚██████╔╝██║ ╚████║╚██████╔╝██║  ██║██║  ██║   ██║   ╚██████╔╝███████╗██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║███████║
+             ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
+                                                                                                                           
+            You have won the game by guessing the correct colours in less than 60 tries 
+";
 }

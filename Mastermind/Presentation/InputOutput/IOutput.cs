@@ -12,4 +12,6 @@ public interface IOutput
 
     public void OutputGameQuitMessage();
 
+    public void OutputGuessesRemaining(int guessesRemaining);
+
 }

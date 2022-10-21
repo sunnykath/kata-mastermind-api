@@ -36,7 +36,6 @@ public class Controller
             else
             {
                 var userGuess = _view.GetUpdatedUserGuess();
-                _view.DisplayGuess(userGuess);
                 gameChecker.EvaluatePredictedAnswer(userGuess);
 
                 if (_game.HasWonGame)
@@ -45,10 +44,10 @@ public class Controller
                 }
                 else
                 {
-                    _view.DisplayClues(_game.Clues);
+                    _view.DisplayUpdatedGameInfo(_game);
                 }
             }
         }
-        _view.DisplayEndGameResult(gameStatus, _game.SelectedColours);
+        _view.DisplayEndGameResult(gameStatus, _game);
     }
 }
