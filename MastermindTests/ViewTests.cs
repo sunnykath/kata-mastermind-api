@@ -28,7 +28,7 @@ namespace MastermindTests
         }
         
         [Fact]
-        public void GivenAViewInstanceWithAConsoleDependency_WhenTheGetUserGuessIsCalled_ThenShouldReturnAnArrayOfColoursContainingTheUserGuess()
+        public void GivenAViewInstanceWithAConsoleDependency_WhenTheGetUpdatedUserGuessIsCalledAfterUpdatePlayerGuess_ThenShouldReturnAnArrayOfColoursContainingTheUserGuess()
         {
             // Arrange
             var mockedInputOutput = new Mock<IInputOutput>();
@@ -36,11 +36,15 @@ namespace MastermindTests
             var expectedGuess = new [] {Colour.Red, Colour.Blue, Colour.Yellow, Colour.Green};
             
             mockedInputOutput.Setup(output => output.GetAGuessInput())
-                .Returns(new[] {Constants.RedSquare, Constants.BlueSquare, Constants.YellowSquare, Constants.GreenSquare})
+                .Returns(new PlayerInput
+                { 
+                    ColoursInput = new[] {Constants.RedSquare, Constants.BlueSquare, Constants.YellowSquare, Constants.GreenSquare}
+                })
                 .Verifiable();
         
             // Act
-            var actualGuess = view.GetUserGuess();
+            view.UpdatePlayerGuess();
+            var actualGuess = view.GetUpdatedUserGuess();
         
             // Assert
             mockedInputOutput.Verify();

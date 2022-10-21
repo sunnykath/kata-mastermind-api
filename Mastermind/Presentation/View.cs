@@ -22,6 +22,8 @@ namespace Mastermind.Presentation
         };
 
         private readonly IInputOutput _inputOutput;
+        private bool _hasQuit;
+        private Colour[] _userGuessedColours = Array.Empty<Colour>();
         public View(IInputOutput consoleInputOutput)
         {
             _inputOutput = consoleInputOutput;
@@ -32,13 +34,27 @@ namespace Mastermind.Presentation
             _inputOutput.OutputWelcomeMessage();
         }
         
-        public Colour[] GetUserGuess()
+        public void UpdatePlayerGuess()
         {
-            var playerInputtedColours = _inputOutput.GetAGuessInput();
-           
-            var userGuessedColours = ConvertStringToColours(playerInputtedColours);
-            
-            return userGuessedColours;
+            var playerInput = _inputOutput.GetAGuessInput();
+            if (playerInput.HasQuit)
+            {
+                _hasQuit = true;
+            }
+            else
+            {
+                _userGuessedColours = ConvertStringToColours(playerInput.ColoursInput);
+            }
+        }
+        
+        public Colour[] GetUpdatedUserGuess()
+        {
+            return _userGuessedColours;
+        }
+
+        public bool HasPLayerQuit()
+        {
+            return _hasQuit;
         }
 
         public void DisplayClues(List<Clue> clues)

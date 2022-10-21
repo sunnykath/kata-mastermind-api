@@ -2,26 +2,17 @@ namespace Mastermind.Presentation.InputOutput;
 
 public class ConsoleInputValidator
 {
-    private readonly List<int> _validatedInput = new(4);
-
-    public int[] GetValidatedInput()
-    {
-        return _validatedInput.ToArray();
-    }
-
     public bool ValidateInput(string input)
     {
+        if (input == "q") return true;
+        
         if (input.Length != 4) return false;
         
         foreach (var character in input)
         {
-            var isInteger = int.TryParse(character.ToString(), out var digit);
+            if (!char.IsDigit(character)) return false;
             
-            if (!isInteger) return false;
-            
-            if (digit is < 0 or > 5) return false;
-            
-            _validatedInput.Add(digit);
+            if (character is < '0' or > '5') return false;
         }
 
         return true;
