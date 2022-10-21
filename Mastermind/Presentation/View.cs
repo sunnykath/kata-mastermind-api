@@ -84,6 +84,7 @@ namespace Mastermind.Presentation
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+            DisplayGuess(correctAnswer);
         }
 
         private string[] ConvertColourToString(Colour[] colours)
