@@ -32,7 +32,7 @@ namespace Mastermind.Presentation.InputOutput
 
         public void OutputClues(List<string> clues)
         {
-            PrintOutput("Here's your clues : " + string.Join(" ", clues));
+            PrintOutput("Here's your clues : " + string.Join(" ", clues) + " ");
         }
 
         public void OutputGameWonMessage()
