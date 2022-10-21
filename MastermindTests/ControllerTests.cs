@@ -40,6 +40,30 @@ public class ControllerTests
             .Returns<List<Clue>>(clues => clues)
             .Verifiable();
     }
+    
+    [Fact]
+    public void
+        GivenPlayGameIsCalled_WhenTheUserQuitsTheGame_ThenTheGameQuitScreenShouldBeDisplayed()
+    {
+        //Arrange
+        var gameController = new Controller(_mockConsole.Object);
+        var dummyCorrectGuess = new [] { Constants.BlueSquare, Constants.RedSquare, Constants.OrangeSquare, Constants.PurpleSquare};
+        
+        _mockConsole.Setup(input => input.GetAGuessInput())
+            .Returns(new PlayerInput
+            {
+                HasQuit = true
+            });
+
+        _mockConsole.Setup(input => input.OutputGameQuitMessage())
+            .Verifiable();
+        
+        // Act
+        gameController.PlayGame(_mockRandomizer.Object);
+    
+        // Assert
+        _mockConsole.Verify();
+    }
 
     [Fact]
     public void GivenPlayGameHasBeenCalled_WhenTheUserIsPromptedToEnterInAGuess_ThenTheGuessShouldBePrintedOut()
