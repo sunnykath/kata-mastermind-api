@@ -39,8 +39,16 @@ public class Controller
                 _view.DisplayGuess(userGuess);
                 gameChecker.EvaluatePredictedAnswer(userGuess);
 
-                _view.DisplayClues(_game.Clues);
+                if (_game.HasWonGame)
+                {
+                    gameStatus = GameStatus.Won;
+                }
+                else
+                {
+                    _view.DisplayClues(_game.Clues);
+                }
             }
         }
+        _view.DisplayEndGameResult(gameStatus, _game.SelectedColours);
     }
 }
