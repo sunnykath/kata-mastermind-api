@@ -20,7 +20,7 @@ public class MastermindService
         _controller.DisplayInitialMessage();
         
         var gameChecker = new Domain.BusinessRules.GamePlay(randomizer, _game);
-        gameChecker.Initialise();
+        gameChecker.SetupGame();
         var gameStatus = GameStatus.Playing;
 
         while (gameStatus == GameStatus.Playing)

@@ -32,7 +32,7 @@ namespace MastermindTests
                 .Verifiable();
             
             // Act
-            _gamePlay.Initialise();
+            _gamePlay.SetupGame();
             var actualSelectedColours = _game.SelectedColours;
             
             // Assert
@@ -59,7 +59,7 @@ namespace MastermindTests
                     randomizer.GetShuffledArray(It.IsAny<List<Clue>>()))
                 .Returns<List<Clue>>(clues => clues);
             
-            _gamePlay.Initialise();
+            _gamePlay.SetupGame();
             
             // Act
             _gamePlay.EvaluatePredictedAnswer(predictedAnswer);
@@ -83,7 +83,7 @@ namespace MastermindTests
                 .Returns(expectedClues)
                 .Verifiable();
             
-            _gamePlay.Initialise();
+            _gamePlay.SetupGame();
             
             // Act
             _gamePlay.EvaluatePredictedAnswer(predictedAnswer);
@@ -105,7 +105,7 @@ namespace MastermindTests
                     randomizer.GetShuffledArray(It.IsAny<List<Clue>>()))
                 .Returns<List<Clue>>(clues => clues);
 
-            _gamePlay.Initialise();
+            _gamePlay.SetupGame();
 
             // Act
             _gamePlay.EvaluatePredictedAnswer(selectedColours);
@@ -127,7 +127,7 @@ namespace MastermindTests
             _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(ValidConditions.SelectedNumberOfColours))
                 .Returns(selectedColours);
         
-            _gamePlay.Initialise();
+            _gamePlay.SetupGame();
         
             // Act & Assert
             var exception = Assert.Throws<Exception>(() => (_gamePlay).EvaluatePredictedAnswer(invalidAnswer));
@@ -146,7 +146,7 @@ namespace MastermindTests
             _mockRandomizer.Setup(randomizer =>
                     randomizer.GetShuffledArray(new List<Clue> { Clue.Black, Clue.Black, Clue.White }))
                 .Returns(new List<Clue>());
-            _gamePlay.Initialise();
+            _gamePlay.SetupGame();
         
             // Act
             for (var i = 0; i < ValidConditions.MaxNumberOfGuesses; i++)

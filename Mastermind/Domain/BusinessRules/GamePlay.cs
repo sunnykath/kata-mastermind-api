@@ -14,7 +14,7 @@ namespace Mastermind.Domain.BusinessRules
             _game = game;
         }
 
-        public void Initialise()
+        public void SetupGame()
         {
             _game.SelectedColours = _randomizer.GetRandomColours(ValidConditions.SelectedNumberOfColours);
             _game.GuessingCount = 0;
