@@ -2,7 +2,7 @@ using Mastermind.Domain.BusinessRules;
 using Mastermind.Domain.Models;
 using Mastermind.Presentation.InputOutput;
 
-namespace Mastermind.Presentation
+namespace Mastermind
 {
     public class Controller
     {
@@ -44,7 +44,7 @@ namespace Mastermind.Presentation
             }
             else
             {
-                _userGuessedColours = ConvertStringToColours(playerInput.ColoursInput);
+                _userGuessedColours = ConvertStringToColours(playerInput.ColoursInput!);
             }
         }
         

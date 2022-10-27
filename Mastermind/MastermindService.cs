@@ -1,5 +1,4 @@
 using Mastermind.Domain.Models;
-using Mastermind.Presentation;
 using Mastermind.Presentation.InputOutput;
 using Mastermind.Randomizer;
 

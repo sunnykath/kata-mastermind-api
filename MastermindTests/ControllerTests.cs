@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Mastermind;
 using Mastermind.Domain.Models;
 using Mastermind.Presentation;
 using Mastermind.Presentation.InputOutput;
