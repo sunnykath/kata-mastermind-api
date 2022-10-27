@@ -1,7 +1,7 @@
 namespace Mastermind.Domain.Models;
 
-public class PlayerInput
+public record PlayerInput
 {
-    public string[] ColoursInput = Array.Empty<string>();
-    public bool HasQuit = false;
+    public string[]? ColoursInput { get; init; }
+    public bool HasQuit { get; init; }
 }
