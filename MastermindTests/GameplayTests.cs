@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Mastermind;
-using Mastermind.Enums;
-using Mastermind.GamePlay;
-using Mastermind.Presentation;
+using Mastermind.Domain.BusinessRules;
+using Mastermind.Domain.Models;
 using Mastermind.Randomizer;
 using Moq;
 using Xunit;
@@ -15,13 +13,13 @@ namespace MastermindTests
     {
         private readonly Mock<IRandomizer> _mockRandomizer;
         private readonly Game _game;
-        private readonly GameChecker _gameChecker;
+        private readonly GamePlay _gamePlay;
 
         public GameplayTests()
         {
             _mockRandomizer = new Mock<IRandomizer>();
             _game = new Game();
-            _gameChecker = new GameChecker(_mockRandomizer.Object, _game);
+            _gamePlay = new GamePlay(_mockRandomizer.Object, _game);
         }
         
         [Fact] 
@@ -29,12 +27,12 @@ namespace MastermindTests
         {
             // Arrange
             var expectedSelectedColours = new[] {Colour.Red, Colour.Blue, Colour.Blue, Colour.Green};
-            _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.SelectedNumberOfColours))
+            _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(ValidConditions.SelectedNumberOfColours))
                 .Returns(expectedSelectedColours)
                 .Verifiable();
             
             // Act
-            _gameChecker.Initialise();
+            _gamePlay.Initialise();
             var actualSelectedColours = _game.SelectedColours;
             
             // Assert
@@ -55,16 +53,16 @@ namespace MastermindTests
             int expectedBlackClueCount)
         {
             // Arrange
-            _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.SelectedNumberOfColours))
+            _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(ValidConditions.SelectedNumberOfColours))
                 .Returns(new[] {Colour.Red, Colour.Blue, Colour.Blue, Colour.Green});
             _mockRandomizer.Setup(randomizer =>
                     randomizer.GetShuffledArray(It.IsAny<List<Clue>>()))
                 .Returns<List<Clue>>(clues => clues);
             
-            _gameChecker.Initialise();
+            _gamePlay.Initialise();
             
             // Act
-            _gameChecker.EvaluatePredictedAnswer(predictedAnswer);
+            _gamePlay.EvaluatePredictedAnswer(predictedAnswer);
             var clues = _game.Clues;
             
             // Assert
@@ -78,17 +76,17 @@ namespace MastermindTests
             // Arrange
             var predictedAnswer = new[] { Colour.Red, Colour.Blue, Colour.Yellow, Colour.Purple };
             var expectedClues = new List<Clue> { Clue.Black, Clue.White, Clue.Black };
-            _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.SelectedNumberOfColours))
+            _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(ValidConditions.SelectedNumberOfColours))
                 .Returns(new[] {Colour.Red, Colour.Blue, Colour.Blue, Colour.Green});
             _mockRandomizer.Setup(randomizer =>
                     randomizer.GetShuffledArray(new List<Clue> { Clue.Black, Clue.Black, Clue.White }))
                 .Returns(expectedClues)
                 .Verifiable();
             
-            _gameChecker.Initialise();
+            _gamePlay.Initialise();
             
             // Act
-            _gameChecker.EvaluatePredictedAnswer(predictedAnswer);
+            _gamePlay.EvaluatePredictedAnswer(predictedAnswer);
             var actualClues = _game.Clues;
 
             // Assert
@@ -101,16 +99,16 @@ namespace MastermindTests
         {
             // Arrange
             var selectedColours = new[] {Colour.Red, Colour.Blue, Colour.Blue, Colour.Green};
-            _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.SelectedNumberOfColours))
+            _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(ValidConditions.SelectedNumberOfColours))
                 .Returns(selectedColours);
             _mockRandomizer.Setup(randomizer =>
                     randomizer.GetShuffledArray(It.IsAny<List<Clue>>()))
                 .Returns<List<Clue>>(clues => clues);
 
-            _gameChecker.Initialise();
+            _gamePlay.Initialise();
 
             // Act
-            _gameChecker.EvaluatePredictedAnswer(selectedColours);
+            _gamePlay.EvaluatePredictedAnswer(selectedColours);
             var hasWonGame = _game.HasWonGame;
         
             // Assert
@@ -126,14 +124,14 @@ namespace MastermindTests
         {
             // Arrange
             var selectedColours = new[] {Colour.Red, Colour.Blue, Colour.Blue, Colour.Green};
-            _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.SelectedNumberOfColours))
+            _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(ValidConditions.SelectedNumberOfColours))
                 .Returns(selectedColours);
         
-            _gameChecker.Initialise();
+            _gamePlay.Initialise();
         
             // Act & Assert
-            var exception = Assert.Throws<Exception>(() => (_gameChecker).EvaluatePredictedAnswer(invalidAnswer));
-            Assert.Equal(ConsoleMessages.InvalidNumberOfColoursExceptionMessage, exception.Message); 
+            var exception = Assert.Throws<Exception>(() => (_gamePlay).EvaluatePredictedAnswer(invalidAnswer));
+            Assert.Equal(ExceptionMessages.InvalidNumberOfColours, exception.Message); 
         }
         
         [Fact]
@@ -143,22 +141,22 @@ namespace MastermindTests
             var selectedColours = new[] {Colour.Red, Colour.Blue, Colour.Blue, Colour.Green};
             var incorrectAnswer = new[] {Colour.Red, Colour.Orange, Colour.Blue, Colour.Yellow};
             
-            _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.SelectedNumberOfColours))
+            _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(ValidConditions.SelectedNumberOfColours))
                 .Returns(selectedColours);
             _mockRandomizer.Setup(randomizer =>
                     randomizer.GetShuffledArray(new List<Clue> { Clue.Black, Clue.Black, Clue.White }))
                 .Returns(new List<Clue>());
-            _gameChecker.Initialise();
+            _gamePlay.Initialise();
         
             // Act
-            for (var i = 0; i < Constants.MaxNumberOfGuesses; i++)
+            for (var i = 0; i < ValidConditions.MaxNumberOfGuesses; i++)
             {
-                _gameChecker.EvaluatePredictedAnswer(incorrectAnswer);
+                _gamePlay.EvaluatePredictedAnswer(incorrectAnswer);
             }
         
             // Assert
-            var exception = Assert.Throws<Exception>(() => _gameChecker.EvaluatePredictedAnswer(incorrectAnswer));
-            Assert.Equal(ConsoleMessages.TooManyTriesExceptionMessage, exception.Message);
+            var exception = Assert.Throws<Exception>(() => _gamePlay.EvaluatePredictedAnswer(incorrectAnswer));
+            Assert.Equal(ExceptionMessages.TooManyTries, exception.Message);
         }
     }
 }

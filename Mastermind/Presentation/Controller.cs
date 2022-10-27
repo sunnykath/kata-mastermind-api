@@ -1,31 +1,31 @@
-using Mastermind.Enums;
-using Mastermind.GamePlay;
+using Mastermind.Domain.BusinessRules;
+using Mastermind.Domain.Models;
 using Mastermind.Presentation.InputOutput;
 
 namespace Mastermind.Presentation
 {
-    public class View
+    public class Controller
     {
         private static readonly Dictionary<Colour, string> DefaultColours = new ()
         {
-            {Colour.Red, Constants.RedSquare},
-            {Colour.Blue, Constants.BlueSquare},
-            {Colour.Green, Constants.GreenSquare},
-            {Colour.Orange, Constants.OrangeSquare},
-            {Colour.Purple, Constants.PurpleSquare},
-            {Colour.Yellow, Constants.YellowSquare},
+            {Colour.Red, Squares.Red},
+            {Colour.Blue, Squares.Blue},
+            {Colour.Green, Squares.Green},
+            {Colour.Orange, Squares.Orange},
+            {Colour.Purple, Squares.Purple},
+            {Colour.Yellow, Squares.Yellow},
         };
 
         private static readonly Dictionary<Clue, string> DefaultClues = new()
         {
-            {Clue.Black, Constants.BlackSquare},
-            {Clue.White, Constants.WhiteSquare}
+            {Clue.Black, Squares.Black},
+            {Clue.White, Squares.White}
         };
 
         private readonly IInputOutput _inputOutput;
         private bool _hasQuit;
         private Colour[] _userGuessedColours = Array.Empty<Colour>();
-        public View(IInputOutput consoleInputOutput)
+        public Controller(IInputOutput consoleInputOutput)
         {
             _inputOutput = consoleInputOutput;
         }
@@ -67,7 +67,7 @@ namespace Mastermind.Presentation
 
         private void DisplayGuessesRemaining(int gameGuessingCount)
         {
-            _inputOutput.OutputGuessesRemaining(Constants.MaxNumberOfGuesses - gameGuessingCount);
+            _inputOutput.OutputGuessesRemaining(ValidConditions.MaxNumberOfGuesses - gameGuessingCount);
         }
 
         public void DisplayClues(List<Clue> clues)

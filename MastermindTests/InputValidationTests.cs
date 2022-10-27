@@ -22,7 +22,7 @@ public class InputValidationTests
     [InlineData("w324", false)]
     [InlineData("12d1", false)]
     [InlineData("qwd1", false)]
-    [InlineData("qwer", false)]
+    [InlineData("verb", false)]
     public void GivenValidateInputIsCalledOnAString_WhenTheStringContainsNonNumbersExceptJustQ_ThenShouldReturnFalse(string inputString, bool expectedIsValid)
     {
         // Arrange

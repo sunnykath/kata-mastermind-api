@@ -1,4 +1,4 @@
-namespace Mastermind.Enums
+namespace Mastermind.Domain.Models
 {
     public enum Clue
     {

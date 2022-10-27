@@ -1,14 +1,17 @@
+using Mastermind.Domain.BusinessRules;
+using Mastermind.Domain.Models;
+
 namespace Mastermind.Presentation.InputOutput
 {
     public class ConsoleInputOutput : IInputOutput
     {
         private static readonly string[] AllColours = { 
-            Constants.RedSquare,
-            Constants.BlueSquare,
-            Constants.GreenSquare,
-            Constants.OrangeSquare,
-            Constants.PurpleSquare,
-            Constants.YellowSquare
+            Squares.Red,
+            Squares.Blue,
+            Squares.Green,
+            Squares.Orange,
+            Squares.Purple,
+            Squares.Yellow
         };
 
         private const char CharToIntConversion = '0';
@@ -67,8 +70,8 @@ namespace Mastermind.Presentation.InputOutput
                     HasQuit = true
                 };
 
-            var playerGuessedColours = new string[Constants.SelectedNumberOfColours];
-            for (var i = 0; i < Constants.SelectedNumberOfColours; i++)
+            var playerGuessedColours = new string[ValidConditions.SelectedNumberOfColours];
+            for (var i = 0; i < ValidConditions.SelectedNumberOfColours; i++)
             {
                 playerGuessedColours[i] = AllColours[userInput[i] - CharToIntConversion];
             }

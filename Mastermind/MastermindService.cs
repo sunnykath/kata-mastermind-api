@@ -1,41 +1,40 @@
-using Mastermind.Enums;
+using Mastermind.Domain.Models;
 using Mastermind.Presentation;
 using Mastermind.Presentation.InputOutput;
 using Mastermind.Randomizer;
-using Mastermind.GamePlay;
 
 namespace Mastermind;
 
-public class Controller
+public class MastermindService
 {
-    private readonly View _view;
+    private readonly Controller _controller;
     private readonly Game _game;
     
-    public Controller(IInputOutput inputOutput)
+    public MastermindService(IInputOutput inputOutput)
     {
         _game = new Game();
-        _view = new View(inputOutput);
+        _controller = new Controller(inputOutput);
     }
 
     public void PlayGame(IRandomizer randomizer)
     {
-        _view.DisplayInitialMessage();
+        _controller.DisplayInitialMessage();
         
-        var gameChecker = new GameChecker(randomizer, _game);
+        var gameChecker = new Domain.BusinessRules.GamePlay(randomizer, _game);
         gameChecker.Initialise();
         var gameStatus = GameStatus.Playing;
 
         while (gameStatus == GameStatus.Playing)
         {
-            _view.UpdatePlayerGuess();
+            _controller.UpdatePlayerGuess();
 
-            if (_view.HasPLayerQuit())
+            if (_controller.HasPLayerQuit())
             {
                 gameStatus = GameStatus.Quit;
             }
             else
             {
-                var userGuess = _view.GetUpdatedUserGuess();
+                var userGuess = _controller.GetUpdatedUserGuess();
                 gameChecker.EvaluatePredictedAnswer(userGuess);
 
                 if (_game.HasWonGame)
@@ -44,10 +43,10 @@ public class Controller
                 }
                 else
                 {
-                    _view.DisplayUpdatedGameInfo(_game);
+                    _controller.DisplayUpdatedGameInfo(_game);
                 }
             }
         }
-        _view.DisplayEndGameResult(gameStatus, _game);
+        _controller.DisplayEndGameResult(gameStatus, _game);
     }
 }

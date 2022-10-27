@@ -1,141 +1,111 @@
 using System.Collections.Generic;
-using Mastermind;
-using Mastermind.Enums;
+using Mastermind.Domain.Models;
 using Mastermind.Presentation;
 using Mastermind.Presentation.InputOutput;
-using Mastermind.Randomizer;
 using Moq;
 using Xunit;
 
-namespace MastermindTests;
-
-public class ControllerTests
+namespace MastermindTests
 {
-    private readonly Mock<IRandomizer> _mockRandomizer;
-    private readonly Mock<IInputOutput> _mockConsole;
-
-    private readonly Colour[] _dummyAnswer = { Colour.Blue, Colour.Red, Colour.Orange, Colour.Purple };
-    private readonly string[] _dummyIncorrectGuess = { Constants.BlueSquare, Constants.GreenSquare, Constants.YellowSquare, Constants.RedSquare };
-    
-    public ControllerTests()
+    public class ControllerTests
     {
-        _mockConsole = new Mock<IInputOutput>();
-        _mockRandomizer = new Mock<IRandomizer>();
+        private readonly Mock<IInputOutput> _mockedInputOutput;
+        private readonly Controller _controller;
 
-        _mockConsole.SetupSequence(input => input.GetAGuessInput())
-            .Returns(new PlayerInput
+        public ControllerTests()
+        {
+            _mockedInputOutput = new Mock<IInputOutput>();
+            _controller = new Controller(_mockedInputOutput.Object);
+
+        }
+        
+        [Fact]
+        public void GivenAViewInstanceWithAConsoleDependency_WhenTheDisplayGameDetailsIsCalled_ThenShouldDisplayTitleAndGameInformation()
+        {
+            // Arrange
+            
+            _mockedInputOutput.Setup(output => output.OutputWelcomeMessage())
+                .Verifiable();
+        
+            // Act
+            _controller.DisplayInitialMessage();
+        
+            // Assert
+            _mockedInputOutput.Verify();
+        }
+        
+        [Fact]
+        public void GivenAViewInstanceWithAConsoleDependency_WhenTheGetUpdatedUserGuessIsCalledAfterUpdatePlayerGuess_ThenShouldReturnAnArrayOfColoursContainingTheUserGuess()
+        {
+            // Arrange
+            var expectedGuess = new [] {Colour.Red, Colour.Blue, Colour.Yellow, Colour.Green};
+            
+            _mockedInputOutput.Setup(output => output.GetAGuessInput())
+                .Returns(new PlayerInput
+                { 
+                    ColoursInput = new[] {Squares.Red, Squares.Blue, Squares.Yellow, Squares.Green}
+                })
+                .Verifiable();
+        
+            // Act
+            _controller.UpdatePlayerGuess();
+            var actualGuess = _controller.GetUpdatedUserGuess();
+        
+            // Assert
+            _mockedInputOutput.Verify();
+            Assert.Equal(expectedGuess, actualGuess);
+        }
+        
+        [Fact]
+        public void GivenAViewInstanceWithAConsoleDependency_WhenTheDisplayCluesIsCalled_ThenShouldDisplayAStringWithAllTheClues()
+        {
+            // Arrange
+            var view = new Controller(_mockedInputOutput.Object);
+            var clueInput = new List<Clue> {Clue.Black, Clue.White, Clue.Black};
+            _mockedInputOutput.Setup(output => 
+                    output.OutputClues(new List<string> {Squares.Black, Squares.White, Squares.Black}))
+                .Verifiable();
+        
+            // Act
+            view.DisplayClues(clueInput);
+        
+            // Assert
+            _mockedInputOutput.Verify();
+        }
+        
+        [Theory]
+        [InlineData(GameStatus.Won)]
+        [InlineData(GameStatus.Quit)]
+        public void GivenAViewInstanceWithAConsoleDependency_WhenDisplayEndGameResultIsCalled_ThenShouldDisplayTheAnswerWithAFinalGameMessage(GameStatus gameStatus)
+        {
+            // Arrange
+            var correctAnswer = new[] {Colour.Blue, Colour.Red, Colour.Yellow, Colour.Green};
+
+            if (gameStatus == GameStatus.Won)
             {
-                ColoursInput = _dummyIncorrectGuess
-            })
-            .Returns(new PlayerInput
+                _mockedInputOutput.Setup(output => 
+                    output.OutputGameWonMessage())
+                .Verifiable();
+            }
+            else
             {
-                HasQuit = true
+                _mockedInputOutput.Setup(output => 
+                        output.OutputGameQuitMessage())
+                    .Verifiable();
+            }
+            _mockedInputOutput.Setup(output => 
+                    output.OutputColourArray(new []{Squares.Blue, Squares.Red, Squares.Yellow, Squares.Green}))
+                .Verifiable();
+        
+            // Act
+            _controller.DisplayEndGameResult(gameStatus, new Game()
+            {
+                GuessingCount = 34,
+                SelectedColours = correctAnswer
             });
-
-        _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(Constants.SelectedNumberOfColours))
-            .Returns(_dummyAnswer);
         
-        _mockRandomizer.Setup(randomizer =>
-                randomizer.GetShuffledArray(It.IsAny<List<Clue>>()))
-            .Returns<List<Clue>>(clues => clues)
-            .Verifiable();
-    }
-    
-    [Fact]
-    public void
-        GivenPlayGameIsCalled_WhenTheUserQuitsTheGame_ThenTheGameQuitScreenShouldBeDisplayed()
-    {
-        //Arrange
-        var gameController = new Controller(_mockConsole.Object);
-        var dummyCorrectGuess = new [] { Constants.BlueSquare, Constants.RedSquare, Constants.OrangeSquare, Constants.PurpleSquare};
-        
-        _mockConsole.Setup(input => input.GetAGuessInput())
-            .Returns(new PlayerInput
-            {
-                HasQuit = true
-            });
-
-        _mockConsole.Setup(input => input.OutputGameQuitMessage())
-            .Verifiable();
-        
-        // Act
-        gameController.PlayGame(_mockRandomizer.Object);
-    
-        // Assert
-        _mockConsole.Verify();
-    }
-
-    [Fact]
-    public void GivenPlayGameHasBeenCalled_WhenTheUserIsPromptedToEnterInAGuess_ThenTheGuessShouldBePrintedOut()
-    {
-        //Arrange
-        _mockConsole.Setup(output => output.OutputColourArray(_dummyIncorrectGuess))
-            .Verifiable();
-        
-        var gameController = new Controller(_mockConsole.Object);
-        
-        // Act
-        gameController.PlayGame(_mockRandomizer.Object);
-
-        // Assert
-        _mockConsole.Verify();
-    }
-
-    [Fact]
-    public void
-        GivenPlayGameIsCalled_WhenTheUserEntersAGuess_ThenTheCluesBasedOnTheUserGuessShouldBeDisplayed()
-    {
-        //Arrange
-        var printedClues = new List<string> { Constants.BlackSquare, Constants.WhiteSquare };
-        
-        _mockConsole.Setup(output => output.OutputClues(printedClues))
-            .Verifiable();
-
-        var gameController = new Controller(_mockConsole.Object);
-        
-        // Act
-        gameController.PlayGame(_mockRandomizer.Object);
-    
-        // Assert
-        _mockConsole.Verify();
-        _mockRandomizer.Verify();
-    }
-    
-    [Fact]
-    public void
-        GivenPlayGameIsCalled_WhenTheUserEntersAnIncorrectGuess_ThenTheUserShouldBePromptedToEnterAnotherGuess()
-    {
-        //Arrange
-        var gameController = new Controller(_mockConsole.Object);
-        
-        // Act
-        gameController.PlayGame(_mockRandomizer.Object);
-    
-        // Assert
-        _mockConsole.Verify(console => console.GetAGuessInput(), Times.AtLeast(2));
-    }
-    
-    [Fact]
-    public void
-        GivenPlayGameIsCalled_WhenTheUserEntersACorrectGuess_ThenTheWinningScreenShouldBeDisplayed()
-    {
-        //Arrange
-        var gameController = new Controller(_mockConsole.Object);
-        var dummyCorrectGuess = new [] { Constants.BlueSquare, Constants.RedSquare, Constants.OrangeSquare, Constants.PurpleSquare};
-        
-        _mockConsole.Setup(input => input.GetAGuessInput())
-            .Returns(new PlayerInput
-            {
-                ColoursInput = dummyCorrectGuess
-            });
-
-        _mockConsole.Setup(input => input.OutputGameWonMessage())
-            .Verifiable();
-        
-        // Act
-        gameController.PlayGame(_mockRandomizer.Object);
-    
-        // Assert
-        _mockConsole.Verify();
+            // Assert
+            _mockedInputOutput.Verify();
+        }
     }
 }

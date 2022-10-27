@@ -1,14 +1,14 @@
-using Mastermind.Enums;
+using Mastermind.Domain.Models;
 using Mastermind.Randomizer;
 
-namespace Mastermind.GamePlay
+namespace Mastermind.Domain.BusinessRules
 {
-    public class GameChecker
+    public class GamePlay
     {
         private readonly IRandomizer _randomizer;
         private readonly Game _game;
         
-        public GameChecker(IRandomizer randomizer, Game game)
+        public GamePlay(IRandomizer randomizer, Game game)
         {
             _randomizer = randomizer;
             _game = game;
@@ -16,7 +16,7 @@ namespace Mastermind.GamePlay
 
         public void Initialise()
         {
-            _game.SelectedColours = _randomizer.GetRandomColours(Constants.SelectedNumberOfColours);
+            _game.SelectedColours = _randomizer.GetRandomColours(ValidConditions.SelectedNumberOfColours);
             _game.GuessingCount = 0;
         }
         

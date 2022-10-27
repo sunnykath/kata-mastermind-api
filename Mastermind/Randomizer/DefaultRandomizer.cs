@@ -1,5 +1,5 @@
 using System.Collections;
-using Mastermind.Enums;
+using Mastermind.Domain.Models;
 
 namespace Mastermind.Randomizer
 {

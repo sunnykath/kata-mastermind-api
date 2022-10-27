@@ -1,4 +1,4 @@
-namespace Mastermind.Presentation;
+namespace Mastermind.Domain.Models;
 
 public class PlayerInput
 {

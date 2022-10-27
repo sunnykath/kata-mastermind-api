@@ -1,6 +1,4 @@
-using Mastermind.Enums;
-
-namespace Mastermind.GamePlay;
+namespace Mastermind.Domain.Models;
 
 public class Game
 {

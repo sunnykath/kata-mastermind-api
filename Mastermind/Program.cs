@@ -1,5 +1,4 @@
-﻿using System;
-using Mastermind.Presentation.InputOutput;
+﻿using Mastermind.Presentation.InputOutput;
 using Mastermind.Randomizer;
 
 namespace Mastermind
@@ -11,7 +10,7 @@ namespace Mastermind
             var console = new ConsoleInputOutput();
 
             var randomizer = new DefaultRandomizer();
-            var controller = new Controller(console);
+            var controller = new MastermindService(console);
             
             controller.PlayGame(randomizer);
 
