@@ -10,9 +10,9 @@ namespace Mastermind
             var console = new ConsoleInputOutput();
 
             var randomizer = new DefaultRandomizer();
-            var controller = new MastermindService(console);
+            var mastermind = new MastermindService(console);
             
-            controller.PlayGame(randomizer);
+            mastermind.PlayGame(randomizer);
 
         }
     }
