@@ -6,12 +6,12 @@ namespace Mastermind.Presentation.InputOutput
     public class ConsoleInputOutput : IInputOutput
     {
         private static readonly string[] AllColours = { 
-            Squares.Red,
-            Squares.Blue,
-            Squares.Green,
-            Squares.Orange,
-            Squares.Purple,
-            Squares.Yellow
+            ColourSquares.Red,
+            ColourSquares.Blue,
+            ColourSquares.Green,
+            ColourSquares.Orange,
+            ColourSquares.Purple,
+            ColourSquares.Yellow
         };
 
         private const char CharToIntConversion = '0';

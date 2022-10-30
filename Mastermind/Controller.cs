@@ -8,18 +8,18 @@ namespace Mastermind
     {
         private static readonly Dictionary<Colour, string> DefaultColours = new ()
         {
-            {Colour.Red, Squares.Red},
-            {Colour.Blue, Squares.Blue},
-            {Colour.Green, Squares.Green},
-            {Colour.Orange, Squares.Orange},
-            {Colour.Purple, Squares.Purple},
-            {Colour.Yellow, Squares.Yellow},
+            {Colour.Red, ColourSquares.Red},
+            {Colour.Blue, ColourSquares.Blue},
+            {Colour.Green, ColourSquares.Green},
+            {Colour.Orange, ColourSquares.Orange},
+            {Colour.Purple, ColourSquares.Purple},
+            {Colour.Yellow, ColourSquares.Yellow},
         };
 
         private static readonly Dictionary<Clue, string> DefaultClues = new()
         {
-            {Clue.Black, Squares.Black},
-            {Clue.White, Squares.White}
+            {Clue.Black, ColourSquares.Black},
+            {Clue.White, ColourSquares.White}
         };
 
         private readonly IInputOutput _inputOutput;
@@ -100,8 +100,7 @@ namespace Mastermind
 
         private string[] ConvertColourToString(Colour[] colours)
         {
-            // @TODO: magic number
-            var colourString = new string[4];
+            var colourString = new string[ValidConditions.SelectedNumberOfColours];
 
             for (var index = 0; index < colours.Length; index++)
             {
@@ -112,8 +111,7 @@ namespace Mastermind
 
         private Colour[] ConvertStringToColours(string[] colourString)
         {
-            // @TODO: magic number
-            var colours = new Colour[4];
+            var colours = new Colour[ValidConditions.SelectedNumberOfColours];
 
             for (var i = 0; i < colourString.Length; i++)
             {

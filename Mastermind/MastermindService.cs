@@ -1,3 +1,4 @@
+using Mastermind.Domain.BusinessRules;
 using Mastermind.Domain.Models;
 using Mastermind.Presentation.InputOutput;
 using Mastermind.Randomizer;
@@ -19,8 +20,8 @@ public class MastermindService
     {
         _controller.DisplayInitialMessage();
         
-        var gameChecker = new Domain.BusinessRules.GamePlay(randomizer, _game);
-        gameChecker.SetupGame();
+        var gamePlay = new GamePlay(randomizer, _game);
+        gamePlay.SetupGame();
         var gameStatus = GameStatus.Playing;
 
         while (gameStatus == GameStatus.Playing)
@@ -34,7 +35,7 @@ public class MastermindService
             else
             {
                 var userGuess = _controller.GetUpdatedUserGuess();
-                gameChecker.EvaluatePredictedAnswer(userGuess);
+                gamePlay.EvaluatePredictedAnswer(userGuess);
 
                 if (_game.HasWonGame)
                 {

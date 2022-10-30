@@ -1,6 +1,6 @@
 namespace Mastermind.Presentation.InputOutput
 {
-    public static class Squares
+    public static class ColourSquares
     {
         public const string Red   = "🟥";
         public const string Blue  = "🟦";

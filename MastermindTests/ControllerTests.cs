@@ -44,7 +44,7 @@ namespace MastermindTests
             _mockedInputOutput.Setup(output => output.GetAGuessInput())
                 .Returns(new PlayerInput
                 { 
-                    ColoursInput = new[] {Squares.Red, Squares.Blue, Squares.Yellow, Squares.Green}
+                    ColoursInput = new[] {ColourSquares.Red, ColourSquares.Blue, ColourSquares.Yellow, ColourSquares.Green}
                 })
                 .Verifiable();
         
@@ -64,7 +64,7 @@ namespace MastermindTests
             var view = new Controller(_mockedInputOutput.Object);
             var clueInput = new List<Clue> {Clue.Black, Clue.White, Clue.Black};
             _mockedInputOutput.Setup(output => 
-                    output.OutputClues(new List<string> {Squares.Black, Squares.White, Squares.Black}))
+                    output.OutputClues(new List<string> {ColourSquares.Black, ColourSquares.White, ColourSquares.Black}))
                 .Verifiable();
         
             // Act
@@ -95,7 +95,7 @@ namespace MastermindTests
                     .Verifiable();
             }
             _mockedInputOutput.Setup(output => 
-                    output.OutputColourArray(new []{Squares.Blue, Squares.Red, Squares.Yellow, Squares.Green}))
+                    output.OutputColourArray(new []{ColourSquares.Blue, ColourSquares.Red, ColourSquares.Yellow, ColourSquares.Green}))
                 .Verifiable();
         
             // Act

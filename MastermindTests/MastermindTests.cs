@@ -16,7 +16,7 @@ public class MastermindTests
     private readonly MastermindService _mastermind;
 
     private readonly Colour[] _dummyAnswer = { Colour.Blue, Colour.Red, Colour.Orange, Colour.Purple };
-    private readonly string[] _dummyIncorrectGuess = { Squares.Blue, Squares.Green, Squares.Yellow, Squares.Red};
+    private readonly string[] _dummyIncorrectGuess = { ColourSquares.Blue, ColourSquares.Green, ColourSquares.Yellow, ColourSquares.Red};
     
     public MastermindTests()
     {
@@ -84,7 +84,7 @@ public class MastermindTests
         GivenPlayGameIsCalled_WhenTheUserEntersAGuess_ThenTheCluesBasedOnTheUserGuessShouldBeDisplayed()
     {
         //Arrange
-        var printedClues = new List<string> { Squares.Black, Squares.White};
+        var printedClues = new List<string> { ColourSquares.Black, ColourSquares.White};
         
         _mockConsole.Setup(output => output.OutputClues(printedClues))
             .Verifiable();
@@ -113,7 +113,7 @@ public class MastermindTests
         GivenPlayGameIsCalled_WhenTheUserEntersACorrectGuess_ThenTheWinningScreenShouldBeDisplayed()
     {
         //Arrange
-        var dummyCorrectGuess = new [] { Squares.Blue, Squares.Red, Squares.Orange, Squares.Purple};
+        var dummyCorrectGuess = new [] { ColourSquares.Blue, ColourSquares.Red, ColourSquares.Orange, ColourSquares.Purple};
         
         _mockConsole.Setup(input => input.GetAGuessInput())
             .Returns(new PlayerInput
