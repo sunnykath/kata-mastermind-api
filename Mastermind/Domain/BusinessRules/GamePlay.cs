@@ -6,28 +6,28 @@ namespace Mastermind.Domain.BusinessRules
     public class GamePlay
     {
         private readonly IRandomizer _randomizer;
-        private readonly Game _game;
+        public Game Game { get; set; } = new(){GameState = GameStatus.Playing};
         
-        public GamePlay(IRandomizer randomizer, Game game)
+        public GamePlay(IRandomizer randomizer)
         {
             _randomizer = randomizer;
-            _game = game;
         }
 
         public void SetupGame()
         {
-            _game.SelectedColours = _randomizer.GetRandomColours(ValidConditions.SelectedNumberOfColours);
-            _game.GuessingCount = 0;
+            Game.SelectedColours = _randomizer.GetRandomColours(ValidConditions.SelectedNumberOfColours);
+            Game.GuessingCount = 0;
         }
         
-        public void EvaluatePredictedAnswer(Colour[] predictedAnswer)
+        public void EvaluatePredictedAnswer()
         {
-            GameValidator.ValidateNumberOfGuesses(_game.GuessingCount);
-            _game.GuessingCount++;
+            GameValidator.ValidateNumberOfGuesses(Game.GuessingCount);
+            Game.GuessingCount++;
 
-            GameValidator.ValidateInputArray(predictedAnswer);
+            var prediction = Game.LatestPlayerGuess;
+            GameValidator.ValidateInputArray(prediction);
             
-            UpdateCluesAccordingThePrediction(predictedAnswer);
+            UpdateCluesAccordingThePrediction(prediction);
             ShuffleClues();
 
             UpdateGameWonStatus();
@@ -35,28 +35,33 @@ namespace Mastermind.Domain.BusinessRules
 
         private void ShuffleClues()
         {
-            _game.Clues = _randomizer.GetShuffledArray(_game.Clues);
+            Game.Clues = _randomizer.GetShuffledArray(Game.Clues);
         }
 
         private void UpdateCluesAccordingThePrediction(Colour[] predictedAnswer)
         {
-            _game.Clues?.Clear();
-            for (var index = 0; index < _game.SelectedColours.Length; index++)
+            Game.Clues?.Clear();
+            for (var index = 0; index < Game.SelectedColours.Length; index++)
             {
-                var selectedColour = _game.SelectedColours[index];
+                var selectedColour = Game.SelectedColours[index];
                 
                 if (!predictedAnswer.Contains(selectedColour)) continue;
 
-                _game.Clues?.Add(predictedAnswer[index] == selectedColour ? Clue.Black : Clue.White);
+                Game.Clues?.Add(predictedAnswer[index] == selectedColour ? Clue.Black : Clue.White);
             }
         }
         
         private void UpdateGameWonStatus()
         {
-            if (_game.Clues?.Count(c => c == Clue.Black) == 4)
+            if (Game.Clues?.Count(c => c == Clue.Black) == 4)
             {
-                _game.GameState = GameStatus.Won;
+                Game.GameState = GameStatus.Won;
             }
+        }
+
+        public void DeleteGame()
+        {
+            Game = null!;
         }
     }
 }

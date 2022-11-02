@@ -7,46 +7,34 @@ namespace Mastermind;
 
 public class MastermindService
 {
+    private readonly View _view;
     private readonly Controller _controller;
-    private readonly Game _game;
     
-    public MastermindService(IInputOutput inputOutput)
+    public MastermindService(IInputOutput inputOutput, IRandomizer randomizer)
     {
-        _game = new Game();
-        _controller = new Controller(inputOutput);
+        _view = new View(inputOutput);
+        _controller = new Controller(randomizer);
     }
 
-    public void PlayGame(IRandomizer randomizer)
+    public void PlayGame()
     {
-        _controller.DisplayInitialMessage();
+        _view.DisplayInitialMessage();
+        var game = _controller.StartNewGame();
         
-        var gamePlay = new GamePlay(randomizer, _game);
-        gamePlay.SetupGame();
-        var gameStatus = GameStatus.Playing;
-
-        while (gameStatus == GameStatus.Playing)
+        while (game.GameState == GameStatus.Playing)
         {
-            _controller.UpdatePlayerGuess();
+            _view.UpdateLastPlayerGuessInGame(game);
+            
+            if (game.GameState == GameStatus.Quit) continue;
+            
+            game = _controller.UpdateGameWithLastPlayerGuess(game);
 
-            if (_controller.HasPLayerQuit())
-            {
-                gameStatus = GameStatus.Quit;
-            }
-            else
-            {
-                var userGuess = _controller.GetUpdatedUserGuess();
-                gamePlay.EvaluatePredictedAnswer(userGuess);
-
-                if (_game.HasWonGame)
-                {
-                    gameStatus = GameStatus.Won;
-                }
-                else
-                {
-                    _controller.DisplayUpdatedGameInfo(_game);
-                }
-            }
+            if (game.GameState == GameStatus.Won) continue;
+            
+            _view.DisplayUpdatedGameInfo(game);
         }
-        _controller.DisplayEndGameResult(gameStatus, _game);
+
+        _controller.EndGame();
+        _view.DisplayEndGameResult(game);
     }
 }

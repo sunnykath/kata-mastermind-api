@@ -18,8 +18,8 @@ namespace MastermindTests
         public GameplayTests()
         {
             _mockRandomizer = new Mock<IRandomizer>();
-            _game = new Game();
-            _gamePlay = new GamePlay(_mockRandomizer.Object, _game);
+            _gamePlay = new GamePlay(_mockRandomizer.Object);
+            _game = _gamePlay.Game;
         }
         
         [Fact] 
@@ -48,7 +48,7 @@ namespace MastermindTests
         [InlineData( new[] {Colour.Purple, Colour.Yellow, Colour.Purple, Colour.Orange}, 0, 0)]
         [InlineData( new[] {Colour.Red, Colour.Blue, Colour.Blue, Colour.Green}, 0, 4)]
         public void GivenTheSelectedColourArrayHasBeenCreated_WhenEvaluateAnswerIsFollowedByTheGetCluesCall_ThenShouldReturnTheCorrectClues(
-            Colour[] predictedAnswer,
+            Colour[] prediction,
             int expectedWhiteClueCount,
             int expectedBlackClueCount)
         {
@@ -62,7 +62,8 @@ namespace MastermindTests
             _gamePlay.SetupGame();
             
             // Act
-            _gamePlay.EvaluatePredictedAnswer(predictedAnswer);
+            _gamePlay.Game.LatestPlayerGuess = prediction;
+            _gamePlay.EvaluatePredictedAnswer();
             var clues = _game.Clues;
             
             // Assert
@@ -74,7 +75,7 @@ namespace MastermindTests
         public void GivenTheSelectedColourArrayHasBeenCreated_WhenEvaluateAnswerIsFollowedByTheGetCluesCall_ThenShouldReturnTheCorrectCluesShuffledByTheRandomizer()
         {
             // Arrange
-            var predictedAnswer = new[] { Colour.Red, Colour.Blue, Colour.Yellow, Colour.Purple };
+            var prediction = new[] { Colour.Red, Colour.Blue, Colour.Yellow, Colour.Purple };
             var expectedClues = new List<Clue> { Clue.Black, Clue.White, Clue.Black };
             _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(ValidConditions.SelectedNumberOfColours))
                 .Returns(new[] {Colour.Red, Colour.Blue, Colour.Blue, Colour.Green});
@@ -86,7 +87,8 @@ namespace MastermindTests
             _gamePlay.SetupGame();
             
             // Act
-            _gamePlay.EvaluatePredictedAnswer(predictedAnswer);
+            _gamePlay.Game.LatestPlayerGuess = prediction;
+            _gamePlay.EvaluatePredictedAnswer();
             var actualClues = _game.Clues;
 
             // Assert
@@ -109,7 +111,8 @@ namespace MastermindTests
             _gamePlay.SetupGame();
 
             // Act
-            _gamePlay.EvaluatePredictedAnswer(selectedColours);
+            _gamePlay.Game.LatestPlayerGuess = selectedColours;
+            _gamePlay.EvaluatePredictedAnswer();
             var actualGameStatus = _game.GameState;
         
             // Assert
@@ -130,8 +133,11 @@ namespace MastermindTests
         
             _gamePlay.SetupGame();
         
-            // Act & Assert
-            var exception = Assert.Throws<Exception>(() => (_gamePlay).EvaluatePredictedAnswer(invalidAnswer));
+            // Act
+            _gamePlay.Game.LatestPlayerGuess = invalidAnswer;
+            
+            // Assert
+            var exception = Assert.Throws<Exception>(() => (_gamePlay).EvaluatePredictedAnswer());
             Assert.Equal(ExceptionMessages.InvalidNumberOfColours, exception.Message); 
         }
         
@@ -150,13 +156,14 @@ namespace MastermindTests
             _gamePlay.SetupGame();
         
             // Act
+            _gamePlay.Game.LatestPlayerGuess = incorrectAnswer;
             for (var i = 0; i < ValidConditions.MaxNumberOfGuesses; i++)
             {
-                _gamePlay.EvaluatePredictedAnswer(incorrectAnswer);
+                _gamePlay.EvaluatePredictedAnswer();
             }
         
             // Assert
-            var exception = Assert.Throws<Exception>(() => _gamePlay.EvaluatePredictedAnswer(incorrectAnswer));
+            var exception = Assert.Throws<Exception>(() => _gamePlay.EvaluatePredictedAnswer());
             Assert.Equal(ExceptionMessages.TooManyTries, exception.Message);
         }
     }
