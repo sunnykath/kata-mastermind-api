@@ -95,9 +95,10 @@ namespace MastermindTests
         }
 
         [Fact]
-        public void GivenTheAnswerIsTheSameAsTheSelectedArray_WhenEvaluateAnswerIsFollowedByTheHasWonGameCall_ThenShouldReturnTrue()
+        public void GivenTheAnswerIsTheSameAsTheSelectedArray_WhenEvaluateAnswerIsCalled_ThenTheGameStatusOfTheGameShouldBeUpdatedToWon()
         {
             // Arrange
+            const GameStatus expectedGameStatus = GameStatus.Won;
             var selectedColours = new[] {Colour.Red, Colour.Blue, Colour.Blue, Colour.Green};
             _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(ValidConditions.SelectedNumberOfColours))
                 .Returns(selectedColours);
@@ -109,10 +110,10 @@ namespace MastermindTests
 
             // Act
             _gamePlay.EvaluatePredictedAnswer(selectedColours);
-            var hasWonGame = _game.HasWonGame;
+            var actualGameStatus = _game.GameState;
         
             // Assert
-            Assert.True(hasWonGame);
+            Assert.Equal(expectedGameStatus, actualGameStatus);
         }
         
         [Theory]

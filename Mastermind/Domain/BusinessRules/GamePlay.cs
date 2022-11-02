@@ -55,7 +55,7 @@ namespace Mastermind.Domain.BusinessRules
         {
             if (_game.Clues?.Count(c => c == Clue.Black) == 4)
             {
-                _game.HasWonGame = true;
+                _game.GameState = GameStatus.Won;
             }
         }
     }
