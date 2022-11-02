@@ -4,7 +4,7 @@ using Mastermind.Presentation.InputOutput;
 
 namespace Mastermind
 {
-    public class Controller
+    public class View
     {
         private static readonly Dictionary<Colour, string> DefaultColours = new ()
         {
@@ -23,9 +23,7 @@ namespace Mastermind
         };
 
         private readonly IInputOutput _inputOutput;
-        private bool _hasQuit;
-        private Colour[] _userGuessedColours = Array.Empty<Colour>();
-        public Controller(IInputOutput consoleInputOutput)
+        public View(IInputOutput consoleInputOutput)
         {
             _inputOutput = consoleInputOutput;
         }
@@ -35,32 +33,21 @@ namespace Mastermind
             _inputOutput.OutputWelcomeMessage();
         }
         
-        public void UpdatePlayerGuess()
+        public void UpdateGameInput(Game game)
         {
             var playerInput = _inputOutput.GetAGuessInput();
             if (playerInput.HasQuit)
             {
-                _hasQuit = true;
+                game.GameState = GameStatus.Quit;
             }
             else
             {
-                _userGuessedColours = ConvertStringToColours(playerInput.ColoursInput!);
+                game.LatestPlayerGuess = ConvertStringToColours(playerInput.ColoursInput!);
             }
         }
-        
-        public Colour[] GetUpdatedUserGuess()
-        {
-            return _userGuessedColours;
-        }
-
-        public bool HasPLayerQuit()
-        {
-            return _hasQuit;
-        }
-
         public void DisplayUpdatedGameInfo(Game game)
         {
-            DisplayGuess(_userGuessedColours);
+            DisplayGuess(game.LatestPlayerGuess);
             DisplayClues(game.Clues);
             DisplayGuessesRemaining(game.GuessingCount);
         }

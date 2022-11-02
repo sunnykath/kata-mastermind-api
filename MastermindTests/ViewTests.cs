@@ -8,15 +8,15 @@ using Xunit;
 
 namespace MastermindTests
 {
-    public class ControllerTests
+    public class ViewTests
     {
         private readonly Mock<IInputOutput> _mockedInputOutput;
-        private readonly Controller _controller;
+        private readonly View _view;
 
-        public ControllerTests()
+        public ViewTests()
         {
             _mockedInputOutput = new Mock<IInputOutput>();
-            _controller = new Controller(_mockedInputOutput.Object);
+            _view = new View(_mockedInputOutput.Object);
 
         }
         
@@ -29,7 +29,7 @@ namespace MastermindTests
                 .Verifiable();
         
             // Act
-            _controller.DisplayInitialMessage();
+            _view.DisplayInitialMessage();
         
             // Assert
             _mockedInputOutput.Verify();
@@ -40,6 +40,7 @@ namespace MastermindTests
         {
             // Arrange
             var expectedGuess = new [] {Colour.Red, Colour.Blue, Colour.Yellow, Colour.Green};
+            var game = new Game();
             
             _mockedInputOutput.Setup(output => output.GetAGuessInput())
                 .Returns(new PlayerInput
@@ -49,8 +50,8 @@ namespace MastermindTests
                 .Verifiable();
         
             // Act
-            _controller.UpdatePlayerGuess();
-            var actualGuess = _controller.GetUpdatedUserGuess();
+            _view.UpdateGameInput(game);
+            var actualGuess = game.LatestPlayerGuess;
         
             // Assert
             _mockedInputOutput.Verify();
@@ -61,7 +62,7 @@ namespace MastermindTests
         public void GivenAViewInstanceWithAConsoleDependency_WhenTheDisplayCluesIsCalled_ThenShouldDisplayAStringWithAllTheClues()
         {
             // Arrange
-            var view = new Controller(_mockedInputOutput.Object);
+            var view = new View(_mockedInputOutput.Object);
             var clueInput = new List<Clue> {Clue.Black, Clue.White, Clue.Black};
             _mockedInputOutput.Setup(output => 
                     output.OutputClues(new List<string> {ColourSquares.Black, ColourSquares.White, ColourSquares.Black}))
@@ -99,7 +100,7 @@ namespace MastermindTests
                 .Verifiable();
         
             // Act
-            _controller.DisplayEndGameResult(gameStatus, new Game()
+            _view.DisplayEndGameResult(gameStatus, new Game()
             {
                 GuessingCount = 34,
                 SelectedColours = correctAnswer
