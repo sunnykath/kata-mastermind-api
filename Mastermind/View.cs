@@ -33,7 +33,7 @@ namespace Mastermind
             _inputOutput.OutputWelcomeMessage();
         }
         
-        public void UpdateGameInput(Game game)
+        public void UpdateLastPlayerGuessInGame(Game game)
         {
             var playerInput = _inputOutput.GetAGuessInput();
             if (playerInput.HasQuit)
@@ -70,9 +70,9 @@ namespace Mastermind
             _inputOutput.OutputColourArray(outputColours);
         }
         
-        public void DisplayEndGameResult(GameStatus gameStatus, Game game)
+        public void DisplayEndGameResult(Game game)
         {
-            switch (gameStatus)
+            switch (game.GameState)
             {
                 case GameStatus.Won:
                     _inputOutput.OutputGameWonMessage();

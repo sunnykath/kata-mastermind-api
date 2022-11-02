@@ -50,7 +50,7 @@ namespace MastermindTests
                 .Verifiable();
         
             // Act
-            _view.UpdateGameInput(game);
+            _view.UpdateLastPlayerGuessInGame(game);
             var actualGuess = game.LatestPlayerGuess;
         
             // Assert
@@ -100,10 +100,11 @@ namespace MastermindTests
                 .Verifiable();
         
             // Act
-            _view.DisplayEndGameResult(gameStatus, new Game()
+            _view.DisplayEndGameResult(new Game()
             {
                 GuessingCount = 34,
-                SelectedColours = correctAnswer
+                SelectedColours = correctAnswer,
+                GameState = gameStatus
             });
         
             // Assert
