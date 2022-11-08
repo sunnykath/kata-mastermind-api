@@ -64,7 +64,7 @@ namespace Mastermind
         
         private void DisplayGuessesRemaining(int gameGuessingCount)
         {
-            _inputOutput.OutputGuessesRemaining(ValidConditions.MaxNumberOfGuesses - gameGuessingCount);
+            _inputOutput.OutputGuessesRemaining(GameConstants.MaxNumberOfGuesses - gameGuessingCount);
         }
         private void DisplayClues(List<Clue> clues)
         {
@@ -79,7 +79,7 @@ namespace Mastermind
         }
         private string[] ConvertColourToString(Colour[] colours)
         {
-            var colourString = new string[ValidConditions.SelectedNumberOfColours];
+            var colourString = new string[GameConstants.SelectedNumberOfColours];
 
             for (var index = 0; index < colours.Length; index++)
             {
@@ -89,7 +89,7 @@ namespace Mastermind
         }
         private Colour[] ConvertStringToColours(string[] colourString)
         {
-            var colours = new Colour[ValidConditions.SelectedNumberOfColours];
+            var colours = new Colour[GameConstants.SelectedNumberOfColours];
 
             for (var i = 0; i < colourString.Length; i++)
             {

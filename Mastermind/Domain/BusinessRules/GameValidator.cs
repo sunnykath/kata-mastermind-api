@@ -4,17 +4,17 @@ namespace Mastermind.Domain.BusinessRules
     {
         public static void ValidateNumberOfGuesses(int guessingCount)
         {
-            if (guessingCount == ValidConditions.MaxNumberOfGuesses)
+            if (guessingCount == GameConstants.MaxNumberOfGuesses)
             {
-                throw new Exception(ExceptionMessages.TooManyTries);
+                throw new Exception($"You have tried more than {GameConstants.MaxNumberOfGuesses} tries!");
             }
         }
         
         public static void ValidateInputArray<T>(IReadOnlyCollection<T> inputArray)
         {
-            if (inputArray.Count != ValidConditions.SelectedNumberOfColours)
+            if (inputArray.Count != GameConstants.SelectedNumberOfColours)
             {
-                throw new Exception(ExceptionMessages.InvalidNumberOfColours);
+                throw new Exception("Answer array should only contain 4 colours.");
             }
         }
     }

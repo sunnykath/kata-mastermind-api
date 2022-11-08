@@ -16,7 +16,7 @@ namespace Mastermind.Domain.BusinessRules
         {
             return new Game
             {
-                SelectedColours =_randomizer.GetRandomColours(ValidConditions.SelectedNumberOfColours),
+                SelectedColours =_randomizer.GetRandomColours(GameConstants.SelectedNumberOfColours),
                 GuessingCount = 0
             };
         }

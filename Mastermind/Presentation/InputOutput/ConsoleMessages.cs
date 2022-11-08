@@ -9,7 +9,7 @@ public static class ConsoleMessages
     public const string InvalidInputMessage = "Invalid Input, Please enter valid numbers between 0-5 : ";
     public const string GuessesRemainingMessage = "Guesses Remaining : ";
 
-    public static readonly string GameInformation = $"Guess the combination of randomly selected {ValidConditions.SelectedNumberOfColours} Colours! You have {ValidConditions.MaxNumberOfGuesses} tries. Good Luck 👍 \n";
+    public static readonly string GameInformation = $"Guess the combination of randomly selected {GameConstants.SelectedNumberOfColours} Colours! You have {GameConstants.MaxNumberOfGuesses} tries. Good Luck 👍 \n";
 
     public const string Title = @"
             Welcome To 

@@ -33,7 +33,7 @@ public class MastermindTests
                 HasQuit = true
             });
 
-        _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(ValidConditions.SelectedNumberOfColours))
+        _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(GameConstants.SelectedNumberOfColours))
             .Returns(_dummyAnswer);
         
         _mockRandomizer.Setup(randomizer =>

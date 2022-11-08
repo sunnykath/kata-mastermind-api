@@ -70,8 +70,8 @@ namespace Mastermind.Presentation.InputOutput
                     HasQuit = true
                 };
 
-            var playerGuessedColours = new string[ValidConditions.SelectedNumberOfColours];
-            for (var i = 0; i < ValidConditions.SelectedNumberOfColours; i++)
+            var playerGuessedColours = new string[GameConstants.SelectedNumberOfColours];
+            for (var i = 0; i < GameConstants.SelectedNumberOfColours; i++)
             {
                 playerGuessedColours[i] = AllColours[userInput[i] - CharToIntConversion];
             }
