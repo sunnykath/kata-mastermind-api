@@ -59,7 +59,7 @@ namespace MastermindTests
         }
         
         [Fact]
-        public void GivenAViewInstanceWithAConsoleDependency_WhenTheDisplayCluesIsCalled_ThenShouldDisplayAStringWithAllTheClues()
+        public void GivenAViewInstanceWithAConsoleDependency_WhenTheDisplayGameInfoIsCalled_ThenShouldDisplayAStringWithAllTheClues()
         {
             // Arrange
             var view = new View(_mockedInputOutput.Object);
@@ -69,7 +69,13 @@ namespace MastermindTests
                 .Verifiable();
         
             // Act
-            view.DisplayClues(clueInput);
+            view.DisplayGameInfo(new Game()
+            {
+                GameState = GameStatus.Playing,
+                Clues = clueInput,
+                GuessingCount = 59,
+                LatestPlayerGuess = new [] { Colour.Blue }
+            });
         
             // Assert
             _mockedInputOutput.Verify();
@@ -100,10 +106,11 @@ namespace MastermindTests
                 .Verifiable();
         
             // Act
-            _view.DisplayEndGameResult(new Game()
+            _view.DisplayGameInfo(new Game()
             {
                 GuessingCount = 34,
                 SelectedColours = correctAnswer,
+                LatestPlayerGuess = correctAnswer,
                 GameState = gameStatus
             });
         

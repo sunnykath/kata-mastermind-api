@@ -1,4 +1,3 @@
-using Mastermind.Domain.BusinessRules;
 using Mastermind.Domain.Models;
 using Mastermind.Presentation.InputOutput;
 using Mastermind.Randomizer;
@@ -25,16 +24,9 @@ public class MastermindService
         {
             _view.UpdateLastPlayerGuessInGame(game);
             
-            if (game.GameState == GameStatus.Quit) continue;
-            
             game = _controller.UpdateGameWithLastPlayerGuess(game);
 
-            if (game.GameState == GameStatus.Won) continue;
-            
-            _view.DisplayUpdatedGameInfo(game);
+            _view.DisplayGameInfo(game);
         }
-
-        _controller.EndGame();
-        _view.DisplayEndGameResult(game);
     }
 }
