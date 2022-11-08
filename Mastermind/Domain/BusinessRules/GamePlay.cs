@@ -17,13 +17,13 @@ namespace Mastermind.Domain.BusinessRules
             return new Game
             {
                 SelectedColours =_randomizer.GetRandomColours(GameConstants.SelectedNumberOfColours),
-                GuessingCount = 0
+                GuessingCount = 0,
+                GameState = GameStatus.Playing
             };
         }
         
         public void EvaluatePredictedAnswer(Game game)
         {
-            if (game.GameState == GameStatus.Quit) return;
             GameValidator.ValidateNumberOfGuesses(game.GuessingCount);
             game.GuessingCount++;
 

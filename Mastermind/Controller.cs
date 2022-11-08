@@ -19,7 +19,10 @@ public class Controller
 
     public Game UpdateGameWithLastPlayerGuess(Game updatedGame)
     {
-        _gamePlay.EvaluatePredictedAnswer(updatedGame);
+        if (updatedGame.GameState != GameStatus.Quit)
+        {
+            _gamePlay.EvaluatePredictedAnswer(updatedGame);
+        }
         return updatedGame;
     }
 }
