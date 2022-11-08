@@ -23,6 +23,7 @@ namespace Mastermind.Domain.BusinessRules
         
         public void EvaluatePredictedAnswer(Game game)
         {
+            if (game.GameState == GameStatus.Quit) return;
             GameValidator.ValidateNumberOfGuesses(game.GuessingCount);
             game.GuessingCount++;
 
