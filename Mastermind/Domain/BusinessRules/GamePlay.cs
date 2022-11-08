@@ -6,56 +6,59 @@ namespace Mastermind.Domain.BusinessRules
     public class GamePlay
     {
         private readonly IRandomizer _randomizer;
-        public Game Game { get; set; } = new(){GameState = GameStatus.Playing};
         
         public GamePlay(IRandomizer randomizer)
         {
             _randomizer = randomizer;
         }
 
-        public void SetupGame()
+        public Game SetupGame()
         {
-            Game.SelectedColours = _randomizer.GetRandomColours(ValidConditions.SelectedNumberOfColours);
-            Game.GuessingCount = 0;
+            return new Game
+            {
+                SelectedColours =_randomizer.GetRandomColours(ValidConditions.SelectedNumberOfColours),
+                GuessingCount = 0
+            };
         }
         
-        public void EvaluatePredictedAnswer()
+        public void EvaluatePredictedAnswer(Game game)
         {
-            GameValidator.ValidateNumberOfGuesses(Game.GuessingCount);
-            Game.GuessingCount++;
+            GameValidator.ValidateNumberOfGuesses(game.GuessingCount);
+            game.GuessingCount++;
 
-            var prediction = Game.LatestPlayerGuess;
-            GameValidator.ValidateInputArray(prediction);
+            GameValidator.ValidateInputArray(game.LatestPlayerGuess);
             
-            UpdateCluesAccordingThePrediction(prediction);
-            ShuffleClues();
+            UpdateCluesAccordingThePrediction(game);
+            game.Clues = GetShuffledClues(game.Clues);
 
-            UpdateGameWonStatus();
+            UpdateGameWonStatus(game);
         }
 
-        private void ShuffleClues()
+        private List<Clue> GetShuffledClues(List<Clue> clues)
         {
-            Game.Clues = _randomizer.GetShuffledArray(Game.Clues);
+            return _randomizer.GetShuffledArray(clues);
         }
 
-        private void UpdateCluesAccordingThePrediction(Colour[] predictedAnswer)
+        private void UpdateCluesAccordingThePrediction(Game game)
         {
-            Game.Clues?.Clear();
-            for (var index = 0; index < Game.SelectedColours.Length; index++)
+            game.Clues?.Clear();
+            var predictedAnswer = game.LatestPlayerGuess;
+            
+            for (var index = 0; index < game.SelectedColours.Length; index++)
             {
-                var selectedColour = Game.SelectedColours[index];
+                var selectedColour = game.SelectedColours[index];
                 
                 if (!predictedAnswer.Contains(selectedColour)) continue;
 
-                Game.Clues?.Add(predictedAnswer[index] == selectedColour ? Clue.Black : Clue.White);
+                game.Clues?.Add(predictedAnswer[index] == selectedColour ? Clue.Black : Clue.White);
             }
         }
         
-        private void UpdateGameWonStatus()
+        private void UpdateGameWonStatus(Game game)
         {
-            if (Game.Clues?.Count(c => c == Clue.Black) == 4)
+            if (game.Clues?.Count(c => c == Clue.Black) == 4)
             {
-                Game.GameState = GameStatus.Won;
+                game.GameState = GameStatus.Won;
             }
         }
     }

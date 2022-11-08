@@ -14,15 +14,12 @@ public class Controller
     }
     public Game StartNewGame()
     {
-        _gamePlay.SetupGame();
-
-        return _gamePlay.Game;
+        return _gamePlay.SetupGame();
     }
 
     public Game UpdateGameWithLastPlayerGuess(Game updatedGame)
     {
-        _gamePlay.Game = updatedGame;
-        _gamePlay.EvaluatePredictedAnswer();
-        return _gamePlay.Game;
+        _gamePlay.EvaluatePredictedAnswer(updatedGame);
+        return updatedGame;
     }
 }

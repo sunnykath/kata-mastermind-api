@@ -12,14 +12,12 @@ namespace MastermindTests
     public class GameplayTests
     {
         private readonly Mock<IRandomizer> _mockRandomizer;
-        private readonly Game _game;
         private readonly GamePlay _gamePlay;
 
         public GameplayTests()
         {
             _mockRandomizer = new Mock<IRandomizer>();
             _gamePlay = new GamePlay(_mockRandomizer.Object);
-            _game = _gamePlay.Game;
         }
         
         [Fact] 
@@ -32,8 +30,8 @@ namespace MastermindTests
                 .Verifiable();
             
             // Act
-            _gamePlay.SetupGame();
-            var actualSelectedColours = _game.SelectedColours;
+            var game = _gamePlay.SetupGame();
+            var actualSelectedColours = game.SelectedColours;
             
             // Assert
             _mockRandomizer.Verify();
@@ -59,16 +57,16 @@ namespace MastermindTests
                     randomizer.GetShuffledArray(It.IsAny<List<Clue>>()))
                 .Returns<List<Clue>>(clues => clues);
             
-            _gamePlay.SetupGame();
+            var game = _gamePlay.SetupGame();
             
             // Act
-            _gamePlay.Game.LatestPlayerGuess = prediction;
-            _gamePlay.EvaluatePredictedAnswer();
-            var clues = _game.Clues;
+            game.LatestPlayerGuess = prediction;
+            _gamePlay.EvaluatePredictedAnswer(game);
+            var actualClues = game.Clues;
             
             // Assert
-            Assert.Equal(expectedWhiteClueCount, clues.Count(c => c == Clue.White));
-            Assert.Equal(expectedBlackClueCount, clues.Count(c => c == Clue.Black));
+            Assert.Equal(expectedWhiteClueCount, actualClues.Count(c => c == Clue.White));
+            Assert.Equal(expectedBlackClueCount, actualClues.Count(c => c == Clue.Black));
         }
 
         [Fact]
@@ -84,12 +82,12 @@ namespace MastermindTests
                 .Returns(expectedClues)
                 .Verifiable();
             
-            _gamePlay.SetupGame();
+            var game = _gamePlay.SetupGame();
             
             // Act
-            _gamePlay.Game.LatestPlayerGuess = prediction;
-            _gamePlay.EvaluatePredictedAnswer();
-            var actualClues = _game.Clues;
+            game.LatestPlayerGuess = prediction;
+            _gamePlay.EvaluatePredictedAnswer(game);
+            var actualClues = game.Clues;
 
             // Assert
             Assert.Equal(expectedClues, actualClues);
@@ -108,12 +106,12 @@ namespace MastermindTests
                     randomizer.GetShuffledArray(It.IsAny<List<Clue>>()))
                 .Returns<List<Clue>>(clues => clues);
 
-            _gamePlay.SetupGame();
+            var game = _gamePlay.SetupGame();
 
             // Act
-            _gamePlay.Game.LatestPlayerGuess = selectedColours;
-            _gamePlay.EvaluatePredictedAnswer();
-            var actualGameStatus = _game.GameState;
+            game.LatestPlayerGuess = selectedColours;
+            _gamePlay.EvaluatePredictedAnswer(game);
+            var actualGameStatus = game.GameState;
         
             // Assert
             Assert.Equal(expectedGameStatus, actualGameStatus);
@@ -131,13 +129,13 @@ namespace MastermindTests
             _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(ValidConditions.SelectedNumberOfColours))
                 .Returns(selectedColours);
         
-            _gamePlay.SetupGame();
+            var game = _gamePlay.SetupGame();
         
             // Act
-            _gamePlay.Game.LatestPlayerGuess = invalidAnswer;
+            game.LatestPlayerGuess = invalidAnswer;
             
             // Assert
-            var exception = Assert.Throws<Exception>(() => (_gamePlay).EvaluatePredictedAnswer());
+            var exception = Assert.Throws<Exception>(() => _gamePlay.EvaluatePredictedAnswer(game));
             Assert.Equal(ExceptionMessages.InvalidNumberOfColours, exception.Message); 
         }
         
@@ -153,17 +151,17 @@ namespace MastermindTests
             _mockRandomizer.Setup(randomizer =>
                     randomizer.GetShuffledArray(new List<Clue> { Clue.Black, Clue.Black, Clue.White }))
                 .Returns(new List<Clue>());
-            _gamePlay.SetupGame();
+            var game = _gamePlay.SetupGame();
         
             // Act
-            _gamePlay.Game.LatestPlayerGuess = incorrectAnswer;
+            game.LatestPlayerGuess = incorrectAnswer;
             for (var i = 0; i < ValidConditions.MaxNumberOfGuesses; i++)
             {
-                _gamePlay.EvaluatePredictedAnswer();
+                _gamePlay.EvaluatePredictedAnswer(game);
             }
         
             // Assert
-            var exception = Assert.Throws<Exception>(() => _gamePlay.EvaluatePredictedAnswer());
+            var exception = Assert.Throws<Exception>(() => _gamePlay.EvaluatePredictedAnswer(game));
             Assert.Equal(ExceptionMessages.TooManyTries, exception.Message);
         }
     }
