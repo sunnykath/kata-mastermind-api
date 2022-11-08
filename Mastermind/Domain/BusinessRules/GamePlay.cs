@@ -58,10 +58,5 @@ namespace Mastermind.Domain.BusinessRules
                 Game.GameState = GameStatus.Won;
             }
         }
-
-        public void DeleteGame()
-        {
-            Game = null!;
-        }
     }
 }

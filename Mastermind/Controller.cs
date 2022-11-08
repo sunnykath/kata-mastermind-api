@@ -25,9 +25,4 @@ public class Controller
         _gamePlay.EvaluatePredictedAnswer();
         return _gamePlay.Game;
     }
-
-    public void EndGame()
-    {
-        _gamePlay.DeleteGame();
-    }
 }
