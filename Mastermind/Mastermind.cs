@@ -4,12 +4,12 @@ using Mastermind.Randomizer;
 
 namespace Mastermind;
 
-public class MastermindService
+public class Mastermind
 {
     private readonly View _view;
     private readonly Controller _controller;
     
-    public MastermindService(IInputOutput inputOutput, IRandomizer randomizer)
+    public Mastermind(IInputOutput inputOutput, IRandomizer randomizer)
     {
         _view = new View(inputOutput);
         _controller = new Controller(randomizer);
