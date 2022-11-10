@@ -25,8 +25,6 @@ namespace Mastermind.Domain.BusinessRules
         public void EvaluatePredictedAnswer(Game game)
         {
             UpdateGameLostStatus(game);
-
-            if (game.GameState == GameStatus.Lost) return;
             
             game.GuessingCount++;
             
