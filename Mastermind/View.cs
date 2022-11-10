@@ -55,6 +55,9 @@ namespace Mastermind
                 case GameStatus.Playing:
                     DisplayClues(game.Clues);
                     break;
+                case GameStatus.Lost:
+                    _inputOutput.OutputGameLostMessage();
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

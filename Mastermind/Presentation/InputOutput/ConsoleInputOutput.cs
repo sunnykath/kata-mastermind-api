@@ -48,6 +48,11 @@ namespace Mastermind.Presentation.InputOutput
             PrintOutput(ConsoleMessages.GameQuitMessage);
         }
 
+        public void OutputGameLostMessage()
+        {
+            PrintOutput(ConsoleMessages.GameLostMessage);
+        }
+
         public void OutputGuessesRemaining(int guessesRemaining)
         {
             PrintOutput(ConsoleMessages.GuessesRemainingMessage + guessesRemaining);

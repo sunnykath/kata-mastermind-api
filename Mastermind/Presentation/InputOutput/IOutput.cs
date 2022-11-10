@@ -11,6 +11,8 @@ public interface IOutput
     public void OutputGameWonMessage();
 
     public void OutputGameQuitMessage();
+    
+    public void OutputGameLostMessage();
 
     public void OutputGuessesRemaining(int guessesRemaining);
 
