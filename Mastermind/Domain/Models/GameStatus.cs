@@ -4,6 +4,7 @@ namespace Mastermind.Domain.Models
     {
         Playing,
         Won,
+        Lost,
         Quit
     }
 }

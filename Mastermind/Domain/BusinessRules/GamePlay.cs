@@ -24,10 +24,11 @@ namespace Mastermind.Domain.BusinessRules
         
         public void EvaluatePredictedAnswer(Game game)
         {
-            GameValidator.ValidateNumberOfGuesses(game.GuessingCount);
-            game.GuessingCount++;
+            UpdateGameLostStatus(game);
 
-            GameValidator.ValidateInputArray(game.LatestPlayerGuess);
+            if (game.GameState == GameStatus.Lost) return;
+            
+            game.GuessingCount++;
             
             UpdateCluesAccordingThePrediction(game);
             game.Clues = GetShuffledClues(game.Clues);
@@ -60,6 +61,13 @@ namespace Mastermind.Domain.BusinessRules
             if (game.Clues?.Count(c => c == Clue.Black) == 4)
             {
                 game.GameState = GameStatus.Won;
+            }
+        }
+        private void UpdateGameLostStatus(Game game)
+        {
+            if (game.GuessingCount == GameConstants.MaxNumberOfGuesses)
+            {
+                game.GameState = GameStatus.Lost;
             }
         }
     }

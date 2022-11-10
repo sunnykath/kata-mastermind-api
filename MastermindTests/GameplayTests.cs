@@ -116,54 +116,30 @@ namespace MastermindTests
             // Assert
             Assert.Equal(expectedGameStatus, actualGameStatus);
         }
-        // @TODO: Discussion topic, Refactor it to not need these exceptions
-        //
-        // [Theory]
-        // [InlineData(new []{Colour.Red, Colour.Blue, Colour.Blue, Colour.Purple, Colour.Orange, Colour.Red, Colour.Yellow})]
-        // [InlineData(new []{Colour.Red, Colour.Blue, Colour.Blue, Colour.Green, Colour.Blue})]
-        // [InlineData(new []{Colour.Red, Colour.Blue, Colour.Blue})]
-        // [InlineData(new Colour[]{ })]
-        // public void GivenTheAnswerDoesntContainExactlyFourColours_WhenEvaluateAnswerIsCalled_ThenShouldThrowExceptionWithAnInvalidMessageForTheNumberOfColours(Colour[] invalidAnswer)
-        // {
-        //     // Arrange
-        //     var selectedColours = new[] {Colour.Red, Colour.Blue, Colour.Blue, Colour.Green};
-        //     _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(GameConstants.SelectedNumberOfColours))
-        //         .Returns(selectedColours);
-        //
-        //     var game = _gamePlay.SetupGame();
-        //
-        //     // Act
-        //     game.LatestPlayerGuess = invalidAnswer;
-        //     
-        //     // Assert
-        //     var exception = Assert.Throws<Exception>(() => _gamePlay.EvaluatePredictedAnswer(game));
-        //     Assert.Equal(ExceptionMessages.InvalidNumberOfColours, exception.Message); 
-        // }
-        //
-        // [Fact]
-        // public void GivenTheAnswerIsNotCorrect_WhenEvaluateAnswerIsCalledMoreThanTheMaxNumberOfGuesses_ThenShouldThrowExceptionWithAnInvalidMessageForTheNumberOfTries()
-        // {
-        //     // Arrange
-        //     var selectedColours = new[] {Colour.Red, Colour.Blue, Colour.Blue, Colour.Green};
-        //     var incorrectAnswer = new[] {Colour.Red, Colour.Orange, Colour.Blue, Colour.Yellow};
-        //     
-        //     _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(GameConstants.SelectedNumberOfColours))
-        //         .Returns(selectedColours);
-        //     _mockRandomizer.Setup(randomizer =>
-        //             randomizer.GetShuffledArray(new List<Clue> { Clue.Black, Clue.Black, Clue.White }))
-        //         .Returns(new List<Clue>());
-        //     var game = _gamePlay.SetupGame();
-        //
-        //     // Act
-        //     game.LatestPlayerGuess = incorrectAnswer;
-        //     for (var i = 0; i < GameConstants.MaxNumberOfGuesses; i++)
-        //     {
-        //         _gamePlay.EvaluatePredictedAnswer(game);
-        //     }
-        //
-        //     // Assert
-        //     var exception = Assert.Throws<Exception>(() => _gamePlay.EvaluatePredictedAnswer(game));
-        //     Assert.Equal(ExceptionMessages.TooManyTries, exception.Message);
-        // }
+        
+        [Fact]
+        public void GivenTheAnswerIsNotCorrect_WhenEvaluateAnswerIsCalledMoreThanTheMaxNumberOfGuesses_ThenShouldChangeGameStatusToLost()
+        {
+            // Arrange
+            var selectedColours = new[] {Colour.Red, Colour.Blue, Colour.Blue, Colour.Green};
+            var incorrectAnswer = new[] {Colour.Red, Colour.Orange, Colour.Blue, Colour.Yellow};
+            
+            _mockRandomizer.Setup(randomizer => randomizer.GetRandomColours(GameConstants.SelectedNumberOfColours))
+                .Returns(selectedColours);
+            _mockRandomizer.Setup(randomizer =>
+                    randomizer.GetShuffledArray(new List<Clue> { Clue.Black, Clue.Black, Clue.White }))
+                .Returns(new List<Clue>());
+            var game = _gamePlay.SetupGame();
+        
+            // Act
+            game.LatestPlayerGuess = incorrectAnswer;
+            for (var i = 0; i <= GameConstants.MaxNumberOfGuesses; i++)
+            {
+                _gamePlay.EvaluatePredictedAnswer(game);
+            }
+        
+            // Assert
+            Assert.Equal(GameStatus.Lost, game.GameState);
+        }
     }
 }
