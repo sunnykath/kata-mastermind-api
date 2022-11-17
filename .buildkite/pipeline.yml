@@ -4,3 +4,10 @@ steps:
     command: 'echo hello, engineer'
     agents:
       queue: fma-dev
+
+  - wait
+
+  - label: 'Testing'
+  command: 'dotnet test'
+  agents: 
+    queue: fma-dev
