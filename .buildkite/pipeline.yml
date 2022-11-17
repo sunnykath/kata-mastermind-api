@@ -1,4 +1,3 @@
----
 steps:
   - label: 'do not panic :cherry_blossom::whale:'
     command: 'echo hello, engineer'
@@ -8,6 +7,6 @@ steps:
   - wait
 
   - label: 'Testing'
-  command: 'dotnet test'
-  agents: 
-    queue: fma-dev
+    command: 'dotnet test'
+    agents: 
+      queue: fma-dev
