@@ -81,37 +81,51 @@ namespace MastermindTests
             _mockedInputOutput.Verify();
         }
         
-        [Theory]
-        [InlineData(GameStatus.Won)]
-        [InlineData(GameStatus.Quit)]
-        public void GivenAViewInstanceWithAConsoleDependency_WhenDisplayEndGameResultIsCalled_ThenShouldDisplayTheAnswerWithAFinalGameMessage(GameStatus gameStatus)
+        [Fact]
+        public void GivenAViewInstanceWithAConsoleDependency_WhenDisplayGameInfoIsCalledWithGameStatusAsQuit_ThenShouldDisplayTheAnswerWithAFinalGameQuitMessage()
         {
             // Arrange
             var correctAnswer = new[] {Colour.Blue, Colour.Red, Colour.Yellow, Colour.Green};
-
-            if (gameStatus == GameStatus.Won)
-            {
-                _mockedInputOutput.Setup(output => 
-                    output.OutputGameWonMessage())
-                .Verifiable();
-            }
-            else
-            {
-                _mockedInputOutput.Setup(output => 
-                        output.OutputGameQuitMessage())
-                    .Verifiable();
-            }
             _mockedInputOutput.Setup(output => 
-                    output.OutputColourArray(new []{ColourSquares.Blue, ColourSquares.Red, ColourSquares.Yellow, ColourSquares.Green}))
+                    output.OutputGameQuitMessage())
+                .Verifiable();
+            _mockedInputOutput.Setup(output => 
+                    output.OutputColours(new []{ColourSquares.Blue, ColourSquares.Red, ColourSquares.Yellow, ColourSquares.Green}))
                 .Verifiable();
         
             // Act
-            _view.DisplayGameInfo(new Game()
+            _view.DisplayGameInfo(new Game
             {
                 GuessingCount = 34,
                 SelectedColours = correctAnswer,
                 LatestPlayerGuess = correctAnswer,
-                GameState = gameStatus
+                GameState = GameStatus.Quit
+            });
+        
+            // Assert
+            _mockedInputOutput.Verify();
+        }
+        
+        [Fact]
+        public void GivenAViewInstanceWithAConsoleDependency_WhenDisplayGameInfoIsCalledWithGameStatusAsWon_ThenShouldDisplayTheAnswerWithAFinalGameWonMessage()
+        {
+            // Arrange
+            var correctAnswer = new[] {Colour.Blue, Colour.Red, Colour.Yellow, Colour.Green};
+
+            _mockedInputOutput.Setup(output =>
+                    output.OutputGameWonMessage())
+                .Verifiable();
+            _mockedInputOutput.Setup(output => 
+                output.OutputColours(new []{ColourSquares.Blue, ColourSquares.Red, ColourSquares.Yellow, ColourSquares.Green}))
+            .Verifiable();
+        
+            // Act
+            _view.DisplayGameInfo(new Game
+            {
+                GuessingCount = 34,
+                SelectedColours = correctAnswer,
+                LatestPlayerGuess = correctAnswer,
+                GameState = GameStatus.Won
             });
         
             // Assert

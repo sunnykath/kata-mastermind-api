@@ -6,6 +6,6 @@ namespace Mastermind.Randomizer
     {
         public Colour[] GetRandomColours(int numberOfColoursToSelect);
 
-        List<Clue> GetShuffledArray(List<Clue> orderedArray);
+        IEnumerable<Clue> GetShuffledArray(IEnumerable<Clue> orderedArray);
     }
 }

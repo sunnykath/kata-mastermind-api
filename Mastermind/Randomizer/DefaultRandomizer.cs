@@ -21,9 +21,9 @@ namespace Mastermind.Randomizer
             return selectedColours;
         }
 
-        public List<Clue> GetShuffledArray(List<Clue> orderedArray)
+        public IEnumerable<Clue> GetShuffledArray(IEnumerable<Clue> orderedArray)
         {
-            return orderedArray.OrderBy(_ => _random.Next()).ToList();
+            return orderedArray.OrderBy(_ => _random.Next());
         }
     }
 }

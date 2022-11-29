@@ -25,38 +25,39 @@ namespace Mastermind.Domain.BusinessRules
         public void EvaluatePredictedAnswer(Game game)
         {
             UpdateGameLostStatus(game);
-            
-            game.GuessingCount++;
+
+            game.IncrementGuesses();
             
             UpdateCluesAccordingThePrediction(game);
-            game.Clues = GetShuffledClues(game.Clues);
+            game.Clues = GetShuffledClues(game.Clues!);
 
             UpdateGameWonStatus(game);
         }
 
-        private List<Clue> GetShuffledClues(List<Clue> clues)
+        private IEnumerable<Clue> GetShuffledClues(IEnumerable<Clue> clues)
         {
             return _randomizer.GetShuffledArray(clues);
         }
 
         private void UpdateCluesAccordingThePrediction(Game game)
         {
-            game.Clues?.Clear();
-            var predictedAnswer = game.LatestPlayerGuess;
+            var playerGuess = game.LatestPlayerGuess.ToArray();
+            var selectedColours = game.SelectedColours.ToArray();
+            var clues = new List<Clue>();
             
-            for (var index = 0; index < game.SelectedColours.Length; index++)
+            for (var index = 0; index < selectedColours.Length; index++)
             {
-                var selectedColour = game.SelectedColours[index];
+                var selectedColour = selectedColours[index];
                 
-                if (!predictedAnswer.Contains(selectedColour)) continue;
-
-                game.Clues?.Add(predictedAnswer[index] == selectedColour ? Clue.Black : Clue.White);
+                if (!playerGuess.Contains(selectedColour)) continue;
+                clues.Add(playerGuess[index] == selectedColour ? Clue.Black : Clue.White);
             }
+            game.Clues = clues;
         }
         
         private void UpdateGameWonStatus(Game game)
         {
-            if (game.Clues?.Count(c => c == Clue.Black) == 4)
+            if (game.Clues?.Count(c => c == Clue.Black) == GameConstants.SelectedNumberOfColours)
             {
                 game.GameState = GameStatus.Won;
             }

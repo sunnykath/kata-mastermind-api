@@ -68,7 +68,7 @@ public class MastermindTests
     public void GivenPlayGameHasBeenCalled_WhenTheUserIsPromptedToEnterInAGuess_ThenTheGuessShouldBePrintedOut()
     {
         //Arrange
-        _mockConsole.Setup(output => output.OutputColourArray(_dummyIncorrectGuess))
+        _mockConsole.Setup(output => output.OutputColours(_dummyIncorrectGuess))
             .Verifiable();
         
         // Act
