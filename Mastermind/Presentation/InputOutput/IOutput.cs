@@ -4,7 +4,7 @@ public interface IOutput
 {
     public void OutputWelcomeMessage();
 
-    public void OutputColourArray(string[] colours);
+    public void OutputColours(string[] colours);
 
     public void OutputClues(List<string> clues);
 

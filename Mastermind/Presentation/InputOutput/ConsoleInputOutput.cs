@@ -28,7 +28,7 @@ namespace Mastermind.Presentation.InputOutput
             PrintOutput(ConsoleMessages.GameInformation);
         }
 
-        public void OutputColourArray(string[] colours)
+        public void OutputColours(string[] colours)
         {
             PrintOutput("Here's your colours : " + string.Join(" ", colours));
         }
@@ -60,13 +60,13 @@ namespace Mastermind.Presentation.InputOutput
 
         private void PrintGetUserGuessMessage()
         {
-            Console.WriteLine(ConsoleMessages.GetUserGuessMessage);
+            Console.WriteLine(ConsoleMessages.UserGuessMessage);
             DisplayTheColoursWithTheirIndexes();
         }
 
         private PlayerInput GetTheUserGuessedColours()
         {
-            Console.Write(ConsoleMessages.GetUserGuessPrompt);
+            Console.Write(ConsoleMessages.UserGuessPrompt);
             var userInput = GetValidInput();
             
             if (userInput == "q")
@@ -99,7 +99,7 @@ namespace Mastermind.Presentation.InputOutput
                 isInputValid = inputValidator.ValidateInput(input);
                 if (!isInputValid)
                 {
-                    Console.Write(ConsoleMessages.InvalidInputMessage);
+                    PrintOutput(ConsoleMessages.InvalidInputMessage);
                 }
             } while (!isInputValid);
 
