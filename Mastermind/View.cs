@@ -39,7 +39,7 @@ namespace Mastermind
             }
             else
             {
-                game.LatestPlayerGuess = ConvertStringToColours(playerInput.ColoursInput!);
+                game.LatestPlayerGuess = ConvertStringToColours((string[])playerInput.ColoursInput!);
             }
         }
         public void DisplayGameInfo(Game game)
@@ -53,7 +53,7 @@ namespace Mastermind
                     _inputOutput.OutputGameQuitMessage();
                     break;
                 case GameStatus.Playing:
-                    DisplayClues(game.Clues);
+                    DisplayClues(game.Clues!);
                     break;
                 case GameStatus.Lost:
                     _inputOutput.OutputGameLostMessage();
@@ -61,7 +61,7 @@ namespace Mastermind
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            DisplayGuess(game.LatestPlayerGuess);
+            DisplayGuess((Colour[])game.LatestPlayerGuess);
             DisplayGuessesRemaining(game.GuessingCount);
         }
         
@@ -69,7 +69,7 @@ namespace Mastermind
         {
             _inputOutput.OutputGuessesRemaining(GameConstants.MaxNumberOfGuesses - gameGuessingCount);
         }
-        private void DisplayClues(List<Clue> clues)
+        private void DisplayClues(IEnumerable<Clue> clues)
         {
             var outputClues = clues.Select(t => DefaultClues[t]).ToList();
 
@@ -78,7 +78,7 @@ namespace Mastermind
         private void DisplayGuess(Colour[] userGuess)
         {
             var outputColours = ConvertColourToString(userGuess);
-            _inputOutput.OutputColourArray(outputColours);
+            _inputOutput.OutputColours(outputColours);
         }
         private string[] ConvertColourToString(Colour[] colours)
         {
