@@ -7,6 +7,6 @@ steps:
   - wait
 
   - label: '"test_tube: Testing'
-    command: '../scripts/run-unit-test.sh'
+    command: './scripts/run-unit-test.sh'
     agents: 
       queue: fma-dev
