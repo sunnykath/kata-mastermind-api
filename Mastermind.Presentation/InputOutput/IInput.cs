@@ -1,4 +1,4 @@
-using Mastermind.Domain.Models;
+using Mastermind.Domain;
 
 namespace Mastermind.Presentation.InputOutput;
 
