@@ -14,7 +14,7 @@ FROM base AS test
 ENTRYPOINT [ "dotnet", "test" ]
 
 FROM base AS publish
-RUN dotnet publish "./Mastermind/Mastermind.csproj" -c Release -o /app/publish
+RUN dotnet publish "./Mastermind.Presentation/Mastermind.Presentation.csproj" -c Release -o /app/publish 
 
 FROM mcr.microsoft.com/dotnet/runtime:6.0-bullseye-slim AS runtime
 
@@ -22,4 +22,4 @@ WORKDIR /app
 
 COPY --from=publish /app/publish .
 
-ENTRYPOINT ["dotnet", "Mastermind.dll"]
+ENTRYPOINT ["dotnet", "Mastermind.Presentation.dll"]
