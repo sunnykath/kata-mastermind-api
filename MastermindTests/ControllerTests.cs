@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Mastermind;
-using Mastermind.Domain.Models;
-using Mastermind.Randomizer;
+using Mastermind.Application;
+using Mastermind.Application.Randomizer;
+using Mastermind.Domain;
 using Xunit;
 
 namespace MastermindTests;
@@ -29,7 +29,7 @@ public class ControllerTests
         var controller = new Controller(new DefaultRandomizer());
         var selectedColours = new[] { Colour.Red, Colour.Yellow, Colour.Green, Colour.Red };
         // Act 
-        var initialGame = new Game()
+        var initialGame = new Game
         {
             SelectedColours = selectedColours,
             LatestPlayerGuess = selectedColours,
@@ -51,7 +51,7 @@ public class ControllerTests
         var controller = new Controller(new DefaultRandomizer());
         var selectedColours = new[] { Colour.Red, Colour.Yellow, Colour.Green, Colour.Red };
         // Act 
-        var game = controller.UpdateGameWithLastPlayerGuess(new Game()
+        var game = controller.UpdateGameWithLastPlayerGuess(new Game
         {
             SelectedColours = selectedColours,
             LatestPlayerGuess = selectedColours,

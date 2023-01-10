@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Mastermind.Domain.BusinessRules;
-using Mastermind.Domain.Models;
+using Mastermind.Application.BusinessRules;
+using Mastermind.Application.Randomizer;
+using Mastermind.Domain;
 using Mastermind.Presentation.InputOutput;
-using Mastermind.Randomizer;
 using Moq;
 using Xunit;
 
@@ -12,7 +12,7 @@ public class MastermindTests
 {
     private readonly Mock<IRandomizer> _mockRandomizer;
     private readonly Mock<IInputOutput> _mockConsole;
-    private readonly Mastermind.Mastermind _mastermind;
+    private readonly Mastermind.Presentation.Mastermind _mastermind;
 
     private readonly Colour[] _dummyAnswer = { Colour.Blue, Colour.Red, Colour.Orange, Colour.Purple };
     private readonly string[] _dummyIncorrectGuess = { ColourSquares.Blue, ColourSquares.Green, ColourSquares.Yellow, ColourSquares.Red};
@@ -39,7 +39,7 @@ public class MastermindTests
                 randomizer.GetShuffledArray(It.IsAny<List<Clue>>()))
             .Returns<List<Clue>>(clues => clues)
             .Verifiable();        
-        _mastermind = new Mastermind.Mastermind(_mockConsole.Object, _mockRandomizer.Object);
+        _mastermind = new Mastermind.Presentation.Mastermind(_mockConsole.Object, _mockRandomizer.Object);
 
     }
     

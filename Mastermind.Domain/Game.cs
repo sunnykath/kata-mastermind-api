@@ -1,4 +1,4 @@
-namespace Mastermind.Domain.Models;
+namespace Mastermind.Domain;
 
 public class Game
 {
