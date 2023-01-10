@@ -8,7 +8,7 @@ RUN ["dotnet", "restore"]
 
 COPY . .
 
-FROM base AS Test
+FROM base AS test
 ENTRYPOINT [ "dotnet", "test" ]
 
 FROM base AS publish
