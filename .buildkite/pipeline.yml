@@ -10,6 +10,8 @@ steps:
     command: './scripts/run-unit-test.sh'
     agents: 
       queue: fma-dev
+      
+  - wait
 
   - label: ':cloudsmith: Build image and push to Cloudsmith'
     command: '.scripts/build-and-publish-to-cloudsmith.sh'
