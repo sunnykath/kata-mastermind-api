@@ -1,8 +1,8 @@
-using Mastermind.Domain.BusinessRules;
-using Mastermind.Domain.Models;
-using Mastermind.Randomizer;
+using Mastermind.Application.BusinessRules;
+using Mastermind.Application.Randomizer;
+using Mastermind.Domain;
 
-namespace Mastermind;
+namespace Mastermind.Application;
 
 public class Controller
 {

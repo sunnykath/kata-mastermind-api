@@ -1,4 +1,4 @@
-namespace Mastermind.Domain.BusinessRules;
+namespace Mastermind.Application.BusinessRules;
 
 public static class GameConstants
 {

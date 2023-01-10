@@ -1,6 +1,5 @@
-namespace Mastermind.Domain.Models
-{
-    public enum Colour
+namespace Mastermind.Domain;
+public enum Colour
     {
         Red,
         Blue,
@@ -9,4 +8,3 @@ namespace Mastermind.Domain.Models
         Purple,
         Yellow
     }
-}

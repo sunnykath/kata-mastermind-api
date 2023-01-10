@@ -1,4 +1,4 @@
-using Mastermind.Domain.BusinessRules;
+using Mastermind.Application.BusinessRules;
 
 namespace Mastermind.Presentation.InputOutput;
 

@@ -1,8 +1,9 @@
-using Mastermind.Domain.Models;
+using Mastermind.Application;
+using Mastermind.Application.Randomizer;
+using Mastermind.Domain;
 using Mastermind.Presentation.InputOutput;
-using Mastermind.Randomizer;
 
-namespace Mastermind;
+namespace Mastermind.Presentation;
 
 public class Mastermind
 {
