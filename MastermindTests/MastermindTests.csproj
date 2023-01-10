@@ -23,7 +23,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Mastermind.Presentation\Mastermind.Presentation.csproj" />
-      <ProjectReference Include="..\Mastermind\Mastermind.csproj" />
     </ItemGroup>
 
 </Project>
