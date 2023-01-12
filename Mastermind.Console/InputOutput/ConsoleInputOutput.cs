@@ -1,7 +1,7 @@
 using Mastermind.Application.BusinessRules;
 using Mastermind.Domain;
 
-namespace Mastermind.Presentation.InputOutput;
+namespace Mastermind.Console.InputOutput;
 
 public class ConsoleInputOutput : IInputOutput
 {
@@ -60,13 +60,13 @@ public class ConsoleInputOutput : IInputOutput
 
     private void PrintGetUserGuessMessage()
     {
-        Console.WriteLine(ConsoleMessages.UserGuessMessage);
+        System.Console.WriteLine(ConsoleMessages.UserGuessMessage);
         DisplayTheColoursWithTheirIndexes();
     }
 
     private PlayerInput GetTheUserGuessedColours()
     {
-        Console.Write(ConsoleMessages.UserGuessPrompt);
+        System.Console.Write(ConsoleMessages.UserGuessPrompt);
         var userInput = GetValidInput();
             
         if (userInput == "q")
@@ -94,7 +94,7 @@ public class ConsoleInputOutput : IInputOutput
         string input;
         do
         { 
-            input = Console.ReadLine()!;
+            input = System.Console.ReadLine()!;
                 
             isInputValid = inputValidator.ValidateInput(input);
             if (!isInputValid)
@@ -115,6 +115,6 @@ public class ConsoleInputOutput : IInputOutput
     }
     private static void PrintOutput(string output)
     {
-        Console.WriteLine(output);
+        System.Console.WriteLine(output);
     }
 }

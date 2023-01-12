@@ -1,6 +1,6 @@
 using Mastermind.Application.BusinessRules;
 
-namespace Mastermind.Presentation.InputOutput;
+namespace Mastermind.Console.InputOutput;
 
 public static class ConsoleMessages
 {

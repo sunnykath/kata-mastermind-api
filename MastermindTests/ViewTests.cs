@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Mastermind.Domain;
-using Mastermind.Presentation;
-using Mastermind.Presentation.InputOutput;
+using Mastermind.Console;
+using Mastermind.Console.InputOutput;
 using Moq;
 using Xunit;
 
