@@ -1,4 +1,4 @@
-using Mastermind.Presentation.InputOutput;
+using Mastermind.Console.InputOutput;
 using Xunit;
 
 namespace MastermindTests;

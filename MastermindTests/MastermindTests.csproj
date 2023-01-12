@@ -22,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Mastermind.Presentation\Mastermind.Presentation.csproj" />
+      <ProjectReference Include="..\Mastermind.Console\Mastermind.Console.csproj" />
     </ItemGroup>
 
 </Project>

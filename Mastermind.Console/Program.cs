@@ -1,7 +1,7 @@
 ﻿using Mastermind.Application.Randomizer;
-using Mastermind.Presentation.InputOutput;
+using Mastermind.Console.InputOutput;
 
-namespace Mastermind.Presentation;
+namespace Mastermind.Console;
 
 public static class Program
 {

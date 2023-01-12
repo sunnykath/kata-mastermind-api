@@ -1,8 +1,8 @@
 using Mastermind.Application.BusinessRules;
+using Mastermind.Console.InputOutput;
 using Mastermind.Domain;
-using Mastermind.Presentation.InputOutput;
 
-namespace Mastermind.Presentation;
+namespace Mastermind.Console;
 
 public class View
 {
