@@ -1,6 +1,6 @@
 using Mastermind.Domain;
 
-namespace Mastermind.Presentation.InputOutput;
+namespace Mastermind.Console.InputOutput;
 
 public interface IInput
 {
