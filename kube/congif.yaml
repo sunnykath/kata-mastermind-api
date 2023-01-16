@@ -1,0 +1,72 @@
+# Deployment - a declaration of pods
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "suyash-mastermind-api-deployment"
+  labels:
+    app: "suyash-mastermind-api"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "suyash-mastermind-api"
+  template:
+    metadata:
+      labels:
+        app: "suyash-mastermind-api"
+        repo: "suyash-mastermind"
+    spec:
+      containers:
+        - image: "docker.myob.com/future-makers-academy/suyash-mastermind"
+          name: suyash-mastermind
+          ports:
+            - containerPort: 80
+
+# Service - a logical grouping of pods
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "suyash-mastermind-api-service"
+  labels:
+    app: "suyash-mastermind-api"
+    repo: "suyash-mastermind"
+  annotations:
+    prometheus.io/scrape: "true"
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: "suyash-mastermind-api"
+
+
+# Ingress - a way to forward traffic to the service and provide SSL termination
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "suyash-mastermind-api-ingress"
+  labels:
+    app: "suyash-mastermind-api"
+    repo: "suyash-mastermind"
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    - host: "suyash-mastermind-api.svc.platform.myobdev.com"
+      http:
+        paths:
+          - path: /api(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: "suyash-mastermind-api-service"
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - "suyash-mastermind-api.svc.platform.myobdev.com"
+      secretName: "suyash-mastermind-api-tls"
