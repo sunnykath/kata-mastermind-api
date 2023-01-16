@@ -13,7 +13,7 @@ public class MastermindController : ControllerBase
         return Ok("Welcome to Mastermind - by Suyash");
     }
 
-    [HttpGet(Name = "Rules")]
+    [HttpGet("rules")]
     public ActionResult<string> GetRules()
     {
         return Ok(@"
