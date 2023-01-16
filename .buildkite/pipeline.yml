@@ -1,10 +1,4 @@
 steps:
-  - label: 'do not panic :cherry_blossom::whale:'
-    command: 'echo hello, engineer'
-    agents:
-      queue: fma-dev
-
-  - wait
 
   - label: ':test_tube: Testing'
     command: './scripts/run-unit-test.sh'
@@ -18,3 +12,11 @@ steps:
     branches: main
     agents:
       queue: fma-dev
+      
+  - wait
+    
+  - label: ":k8s: Deploy to Europa Pre-Prod"
+    command: './scripts/deploy.sh'
+    branches: main
+    agents:
+      queue: europa-preprod-fma
