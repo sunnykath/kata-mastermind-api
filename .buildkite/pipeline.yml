@@ -5,6 +5,11 @@ steps:
     agents: 
       queue: fma-dev
       
+  - label: ":SonarQube: Run SonarQube scan"
+    command: ./.sonarqube/scan.sh
+    agents:
+      queue: "fma-dev"
+      
   - wait
 
   - label: ':cloudsmith: Build image and push to Cloudsmith'
