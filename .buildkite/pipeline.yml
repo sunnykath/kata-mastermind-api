@@ -9,8 +9,8 @@ steps:
     command: ./.sonarqube/scan.sh
     agents:
       queue: "fma-dev"
-      
-  - wait
+
+  - block
 
   - label: ':cloudsmith: Build image and push to Cloudsmith'
     command: './scripts/build-and-publish-to-cloudsmith.sh'
@@ -19,8 +19,6 @@ steps:
       
   - wait
   
-  - block
-    
   - label: ":k8s: Deploy to Europa Pre-Prod"
     command: './scripts/deploy.sh'
     agents:
