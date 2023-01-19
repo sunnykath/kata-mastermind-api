@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Mastermind.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("/")]
 public class MastermindController : ControllerBase
 {
 
