@@ -59,6 +59,13 @@ spec:
     - host: "suyash-mastermind-api.svc.platform.myobdev.com"
       http:
         paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: "suyash-mastermind-frontend-service"
+                port:
+                  number: 80
           - path: /api(/|$)(.*)
             pathType: Prefix
             backend:
