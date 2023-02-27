@@ -10,4 +10,9 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Mastermind.Application\Mastermind.Application.csproj" />
+      <ProjectReference Include="..\Mastermind.Domain\Mastermind.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

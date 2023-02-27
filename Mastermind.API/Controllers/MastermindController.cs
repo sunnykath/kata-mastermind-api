@@ -1,3 +1,4 @@
+using Mastermind.Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mastermind.API.Controllers;
@@ -11,5 +12,11 @@ public class MastermindController : ControllerBase
     public ActionResult<string> Get()
     {
         return Ok("Welcome to Mastermind - by Suyash");
+    }
+
+    [HttpGet("game")]
+    public ActionResult<Game> GetNextGameStateObject()
+    {
+        // Update the game state object and return it
     }
 }
