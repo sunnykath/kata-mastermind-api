@@ -53,20 +53,20 @@ metadata:
     repo: "suyash-mastermind"
   annotations:
     kubernetes.io/tls-acme: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
   rules:
     - host: "suyash-mastermind-api.svc.platform.myobdev.com"
       http:
         paths:
-          - path: /(a^)(.*)
+          - path: /(.*)
             pathType: Prefix
             backend:
               service:
                 name: "suyash-mastermind-frontend-service"
                 port:
                   number: 80
-          - path: /api(/|$)(.*)
+          - path: /api(?:/|$)(.*)
             pathType: Prefix
             backend:
               service:
