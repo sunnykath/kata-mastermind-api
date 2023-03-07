@@ -1,23 +1,38 @@
+using Mastermind.API.DTO;
 using Mastermind.Application.Randomizer;
-using Mastermind.Domain;
+using Mastermind.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mastermind.API.Controllers;
 
 [ApiController]
-[Route("/")]
+[Route("/game")]
 public class MastermindController : ControllerBase
 {
     private readonly Application.Controller _controller;
-    public MastermindController(IRandomizer randomizer)
+    private readonly MastermindContext _context;
+    public MastermindController(IRandomizer randomizer, MastermindContext mastermindContext)
     {
         _controller = new Application.Controller(randomizer);
+        _context = mastermindContext;
     }
 
-    [HttpGet(Name = "Mastermind")]
-    public ActionResult<string> Get()
+    [HttpGet]
+    public ActionResult<string> GetAllGames()
     {
-        return Ok("Welcome to Mastermind - by Suyash");
+        var games = _context.Games.Select(GameDto.ToDto).ToList();
+        return Ok(games);
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<GameDto>> GetGameById(Guid id)
+    {
+        var game = await _context.Games.FindAsync(id);
+        if (game == null)
+        {
+            return NotFound();
+        }
+        return Ok(GameDto.ToDto(game));
     }
 
     [HttpPatch("game")]
