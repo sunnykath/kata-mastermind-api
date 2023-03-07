@@ -10,4 +10,8 @@
       <ProjectReference Include="..\Mastermind.Domain\Mastermind.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0-preview.1.23111.4" />
+    </ItemGroup>
+
 </Project>
