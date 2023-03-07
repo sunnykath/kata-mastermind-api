@@ -2,6 +2,7 @@ namespace Mastermind.Domain;
 
 public class Game
 {
+    public Guid Id { get; set; }
     public GameStatus GameState { get; set; }
     public IEnumerable<Clue>? Clues { get; set; }
     public int GuessingCount { get; set; }
