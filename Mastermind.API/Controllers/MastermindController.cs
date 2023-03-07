@@ -47,22 +47,30 @@ public class MastermindController : ControllerBase
     }
     
     [HttpPut]
-    public async Task<ActionResult<GameDto>> UpdateLastPlayerGuessInGame(GameDto gameInput)
+    public async Task<ActionResult<GameDto>> UpdateLastPlayerGuessInGame(GameDto gameDto)
     {
-        var game = await _context.Games.FindAsync(gameInput.Id);
+        if (gameDto == null)
+        {
+            return BadRequest("Invalid Object");
+        }
+        if (gameDto.LatestPlayerGuess.Count() != 4)
+        {
+            return BadRequest("Guess should only contain four colours");
+        }
+        
+        var game = await _context.Games.FindAsync(gameDto.Id);
         if (game == null)
         {
             return NotFound();
         }
 
-        game.LatestPlayerGuess = gameInput.LatestPlayerGuess;
-        
+        game.LatestPlayerGuess = gameDto.LatestPlayerGuess;
         var updatedGame = _controller.UpdateGameWithLastPlayerGuess(game);
 
         game = updatedGame;
         
         await _context.SaveChangesAsync();
 
-        return Ok(GameDto.ToDto(updatedGame));
+        return Ok(GameDto.ToDto(game));
     }
 }
