@@ -6,6 +6,7 @@ COPY ./Mastermind.Application/Mastermind.Application.csproj ./Mastermind.Applica
 COPY ./Mastermind.API/Mastermind.API.csproj ./Mastermind.API/
 COPY ./Mastermind.Console/Mastermind.Console.csproj ./Mastermind.Console/
 COPY ./Mastermind.Domain/Mastermind.Domain.csproj ./Mastermind.Domain/
+COPY ./Mastermind.Domain/Mastermind.Infrastructure.csproj ./Mastermind.Infrastructure/
 COPY ./MastermindTests/MastermindTests.csproj ./MastermindTests/
 RUN ["dotnet", "restore"]
 
