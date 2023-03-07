@@ -35,12 +35,34 @@ public class MastermindController : ControllerBase
         return Ok(GameDto.ToDto(game));
     }
 
-    [HttpPatch("game")]
-    public ActionResult<Game> GetNextGameStateObject(Game game)
+    [HttpPost]
+    public async Task<ActionResult<GameDto>> CreateGame()
     {
-        // Update the game state object and return it
-        var newGameStateObject = _controller.UpdateGameWithLastPlayerGuess(game);
+        var newGame = _controller.StartNewGame();
+        var game = await _context.Games.AddAsync(newGame);
+        var newGameDto = GameDto.ToDto(game.Entity);
+        await _context.SaveChangesAsync();
 
-        return Ok(newGameStateObject);
+        return Created($"/game/{newGame.Id}", newGameDto);
+    }
+    
+    [HttpPut]
+    public async Task<ActionResult<GameDto>> UpdateLastPlayerGuessInGame(GameDto gameInput)
+    {
+        var game = await _context.Games.FindAsync(gameInput.Id);
+        if (game == null)
+        {
+            return NotFound();
+        }
+
+        game.LatestPlayerGuess = gameInput.LatestPlayerGuess;
+        
+        var updatedGame = _controller.UpdateGameWithLastPlayerGuess(game);
+
+        game = updatedGame;
+        
+        await _context.SaveChangesAsync();
+
+        return Ok(GameDto.ToDto(updatedGame));
     }
 }
