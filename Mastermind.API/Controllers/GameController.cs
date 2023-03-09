@@ -73,4 +73,21 @@ public class GameController : ControllerBase
 
         return Ok(GameDto.ToDto(game));
     }
+
+    [HttpDelete]
+    [Route("{id:guid}")]
+    public async Task<ActionResult<GameDto>> DeleteGame(Guid gameId)
+    {
+        var gameToDelete = await _context.Games.FindAsync(gameId);
+
+        if (gameToDelete == null)
+        {
+            return NotFound("Game with that game id doesn't exist or was deleted already");
+        }
+
+        _context.Games.Remove(gameToDelete);
+        await _context.SaveChangesAsync();
+
+        return Ok(gameToDelete);
+    }
 }
