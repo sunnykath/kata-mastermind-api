@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace Mastermind.API.Controllers;
 
 [ApiController]
-[Route("/game")]
-public class MastermindController : ControllerBase
+[Route("[controller]")]
+public class GameController : ControllerBase
 {
     private readonly Application.Controller _controller;
     private readonly MastermindContext _context;
-    public MastermindController(IRandomizer randomizer, MastermindContext mastermindContext)
+    public GameController(IRandomizer randomizer, MastermindContext mastermindContext)
     {
         _controller = new Application.Controller(randomizer);
         _context = mastermindContext;
@@ -43,7 +43,7 @@ public class MastermindController : ControllerBase
         var newGameDto = GameDto.ToDto(game.Entity);
         await _context.SaveChangesAsync();
 
-        return Created($"/game/{newGame.Id}", newGameDto);
+        return Created($"/{newGame.Id}", newGameDto);
     }
     
     [HttpPut]
